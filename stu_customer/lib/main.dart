@@ -22,9 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'STU Driver',
       routes: {
-        '/': (context) => SplashScreen(
-              child: LayoutPage(body: HomePage()),
-            ),
+        '/': (context) => LayoutPage(body: HomePage()),
         '/home': (context) => LayoutPage(body: HomePage()),
       },
     );

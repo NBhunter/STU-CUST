@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stu_customer/core/utils/size_utils.dart';
+import 'package:stu_customer/screen/Mapview.dart';
+import 'package:stu_customer/screen/home.dart';
+import 'package:stu_customer/screen/make_order.dart';
 import 'package:stu_customer/screen/widgets/appbar_image.dart';
 import 'package:stu_customer/screen/widgets/custom_app_bar.dart';
 import 'package:stu_customer/theme/app_style.dart';
@@ -31,15 +34,15 @@ class MyUI extends State<LayoutPage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // if (index == 1) {
-      //   _currentPage = OrderPage();
-      // } else if (index == 0) {
-      //   _currentPage = HomePage();
-      // } else if (index == 2) {
-      //   _currentPage = MessagePage();
-      // } else if (index == 3) {
-      //   _currentPage = ProfilePage();
-      // }
+      if (index == 1) {
+        _currentPage = MakeOrderPage();
+      } else if (index == 0) {
+        _currentPage = HomePage();
+      } else if (index == 2) {
+        _currentPage = FullMap();
+        // } else if (index == 3) {
+        //   _currentPage = ProfilePage();
+      }
     });
   }
 

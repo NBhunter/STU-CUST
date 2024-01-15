@@ -39,6 +39,9 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.3.0
   flutter_svg: ^2.0.9
+  flutter_polyline_points: ^2.0.0
+  location: ^5.0.3
+  mapbox_maps_flutter: ^0.5.1
 
 dev_dependencies:
   flutter_test:
