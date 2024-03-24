@@ -39,6 +39,15 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.3.0
   flutter_svg: ^2.0.9
+  flutter_polyline_points: ^2.0.0
+  location: ^5.0.3
+  mapbox_maps_flutter: ^0.5.1
+  latlng: ^1.0.0
+  shared_preferences: ^2.2.2
+  geolocator: ^11.0.0
+  firebase_database: ^10.4.0
+  url_launcher: ^6.2.4
+  flutter_local_notifications: ^17.0.0
 
 dev_dependencies:
   flutter_test:
