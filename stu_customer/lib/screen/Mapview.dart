@@ -86,7 +86,10 @@ class FullMapState extends State<FullMap> {
         isShowStart = true;
       });
     } catch (e) {
+<<<<<<< HEAD
       // ignore: avoid_print
+=======
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
       print('$e');
     }
   }
@@ -103,19 +106,31 @@ class FullMapState extends State<FullMap> {
       setState(() {
         _location = locationResult;
         loading = false;
+<<<<<<< HEAD
         isShowStart = true;
+=======
+        //isShowStart = true;
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
         isLocation = true;
         lngStart = _location!.longitude;
         latStart = _location!.latitude;
 
         mapboxMap?.setCamera(CameraOptions(
             center: Point(coordinates: Position(lngStart!, latStart!)).toJson(),
+<<<<<<< HEAD
             zoom: 12.0));
+=======
+            zoom: 15.0));
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
         mapboxMap?.flyTo(
             CameraOptions(
                 anchor: ScreenCoordinate(x: 0, y: 0),
+<<<<<<< HEAD
                 zoom: 20,
+=======
+                zoom: 15,
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
                 bearing: 0,
                 pitch: 0),
             MapAnimationOptions(duration: 2000, startDelay: 0));
@@ -199,7 +214,11 @@ class FullMapState extends State<FullMap> {
                             startDetails[index]['geometry']['location']['lng'],
                             startDetails[index]['geometry']['location']['lat']))
                     .toJson(),
+<<<<<<< HEAD
                 zoom: 12.0));
+=======
+                zoom: 15.0));
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -298,7 +317,11 @@ class FullMapState extends State<FullMap> {
                             endDetails[index]['geometry']['location']['lng'],
                             endDetails[index]['geometry']['location']['lat']))
                     .toJson(),
+<<<<<<< HEAD
                 zoom: 12.0));
+=======
+                zoom: 15));
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -340,7 +363,11 @@ class FullMapState extends State<FullMap> {
   void getZoom() async {
     mapboxMap?.flyTo(
         CameraOptions(
+<<<<<<< HEAD
           zoom: 13.0,
+=======
+          zoom: 15.0,
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
         ),
         MapAnimationOptions(duration: 2000, startDelay: 0));
   }
@@ -367,7 +394,11 @@ class FullMapState extends State<FullMap> {
                 latEnd!,
               )).toJson(),
               infiniteBounds: true),
+<<<<<<< HEAD
           maxZoom: 13,
+=======
+          maxZoom: 15,
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
           minZoom: 0,
           maxPitch: 10,
           minPitch: 0));
@@ -478,7 +509,11 @@ class FullMapState extends State<FullMap> {
             cameraOptions: CameraOptions(
                 center:
                     Point(coordinates: Position(105.83991, 21.02800)).toJson(),
+<<<<<<< HEAD
                 zoom: 14.0),
+=======
+                zoom: 15.0),
+>>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
             styleUri: Mapstyle,
             textureView: true,
             onMapCreated: _onMapCreated,
