@@ -86,7 +86,6 @@ class FullMapState extends State<FullMap> {
         isShowStart = true;
       });
     } catch (e) {
-      // ignore: avoid_print
       print('$e');
     }
   }
@@ -103,19 +102,19 @@ class FullMapState extends State<FullMap> {
       setState(() {
         _location = locationResult;
         loading = false;
-        isShowStart = true;
+        //isShowStart = true;
         isLocation = true;
         lngStart = _location!.longitude;
         latStart = _location!.latitude;
 
         mapboxMap?.setCamera(CameraOptions(
             center: Point(coordinates: Position(lngStart!, latStart!)).toJson(),
-            zoom: 12.0));
+            zoom: 15.0));
 
         mapboxMap?.flyTo(
             CameraOptions(
                 anchor: ScreenCoordinate(x: 0, y: 0),
-                zoom: 20,
+                zoom: 15,
                 bearing: 0,
                 pitch: 0),
             MapAnimationOptions(duration: 2000, startDelay: 0));
@@ -199,7 +198,7 @@ class FullMapState extends State<FullMap> {
                             startDetails[index]['geometry']['location']['lng'],
                             startDetails[index]['geometry']['location']['lat']))
                     .toJson(),
-                zoom: 12.0));
+                zoom: 15.0));
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -298,7 +297,7 @@ class FullMapState extends State<FullMap> {
                             endDetails[index]['geometry']['location']['lng'],
                             endDetails[index]['geometry']['location']['lat']))
                     .toJson(),
-                zoom: 12.0));
+                zoom: 15));
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -340,7 +339,7 @@ class FullMapState extends State<FullMap> {
   void getZoom() async {
     mapboxMap?.flyTo(
         CameraOptions(
-          zoom: 13.0,
+          zoom: 15.0,
         ),
         MapAnimationOptions(duration: 2000, startDelay: 0));
   }
@@ -367,7 +366,7 @@ class FullMapState extends State<FullMap> {
                 latEnd!,
               )).toJson(),
               infiniteBounds: true),
-          maxZoom: 13,
+          maxZoom: 15,
           minZoom: 0,
           maxPitch: 10,
           minPitch: 0));
@@ -478,7 +477,7 @@ class FullMapState extends State<FullMap> {
             cameraOptions: CameraOptions(
                 center:
                     Point(coordinates: Position(105.83991, 21.02800)).toJson(),
-                zoom: 14.0),
+                zoom: 15.0),
             styleUri: Mapstyle,
             textureView: true,
             onMapCreated: _onMapCreated,
