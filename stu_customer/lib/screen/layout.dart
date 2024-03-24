@@ -39,7 +39,7 @@ class MyUI extends State<LayoutPage> {
       } else if (index == 0) {
         _currentPage = HomePage();
       } else if (index == 2) {
-        _currentPage = FullMap();
+        _currentPage = MapsDemo();
         // } else if (index == 3) {
         //   _currentPage = ProfilePage();
       }
