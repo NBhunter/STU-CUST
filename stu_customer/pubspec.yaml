@@ -42,18 +42,12 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   location: ^5.0.3
   mapbox_maps_flutter: ^0.5.1
-<<<<<<< HEAD
   latlng: ^1.0.0
   shared_preferences: ^2.2.2
   geolocator: ^11.0.0
   firebase_database: ^10.4.0
   url_launcher: ^6.2.4
   flutter_local_notifications: ^17.0.0
-=======
-  geolocator: ^10.1.0
-  mapbox_gl: ^0.16.0
-  device_info_plus: ^9.1.1
->>>>>>> origin/backup-120_1
 
 dev_dependencies:
   flutter_test:

@@ -1,28 +1,35 @@
-import 'package:location/location.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show PlatformException, rootBundle;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
-import 'package:stu_customer/screen/autocomplete.dart';
-import 'package:stu_customer/screen/marker.dart';
-import 'package:stu_customer/screen/safearea.dart';
-import 'package:stu_customer/screen/simplemap.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:stu_customer/firebase_options.dart';
+import 'package:stu_customer/screen/Map/get_location.dart';
 
 class FullMap extends StatefulWidget {
-  const FullMap();
+  const FullMap({super.key});
 
   @override
-  State<MapsDemo> createState() => _MapsDemoState();
+  State createState() => FullMapState();
 }
 
 class FullMapState extends State<FullMap> {
+  Position? _position;
   MapboxMap? mapboxMap;
-  LocationData? _currentLocation;
-
-  _onMapCreated(MapboxMap mapboxMap) {
+  CircleAnnotationManager? _circleAnnotationManagerStart;
+  CircleAnnotationManager? _circleAnnotationManagerEnd;
+  _onMapCreated(MapboxMap mapboxMap) async {
     this.mapboxMap = mapboxMap;
   }
 
-<<<<<<< HEAD
   String start = "";
   String end = "";
   String duration = "";
@@ -451,13 +458,6 @@ class FullMapState extends State<FullMap> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
-=======
-  @override
-  void initState() {
-    super.initState();
-  }
-
->>>>>>> e6ae5ff634c965942b7a4ae388fb4427c0fa786e
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData;
@@ -467,7 +467,6 @@ class FullMapState extends State<FullMap> {
     print('Kich cỡ màn hình: $Midsize');
     _getLocation();
     return Scaffold(
-<<<<<<< HEAD
         body: Stack(
       children: [
         SizedBox(
@@ -483,89 +482,274 @@ class FullMapState extends State<FullMap> {
             styleUri: Mapstyle,
             textureView: true,
             onMapCreated: _onMapCreated,
-=======
-      body: Center(
-        child: Stack(children: [
-          SizedBox(
-            child: MapWidget(
-              key: const ValueKey("mapWidget"),
-              resourceOptions: ResourceOptions(
-                  accessToken:
-                      "sk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHF4dHFzYmEwZzhkMmpwemdzd2luNzA2In0.FpC6KZ2YvdcQ-pKOBmVwDQ"),
-              cameraOptions: CameraOptions(
-                  center: Point(coordinates: Position(10.840130, 106.663147))
-                      .toJson(),
-                  zoom: 3.0),
-              styleUri: MapboxStyles.LIGHT,
-              textureView: true,
-              onMapCreated: _onMapCreated,
-            ),
->>>>>>> e6ae5ff634c965942b7a4ae388fb4427c0fa786e
           ),
-        ]),
-      ),
-    );
+        ),
+        Container(
+            height: 160,
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            decoration: BoxDecoration(color: Colors.grey[200]),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.only(left: 12),
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.circle_outlined,
+                                color: Colors.blue,
+                                size: 20,
+                              ),
+                              Expanded(
+                                  child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 8),
+                                child: TextField(
+                                  controller: _searchStart,
+                                  onChanged: (startText) {
+                                    int currentStartLength = startText.length;
+
+                                    if (startText.length >= 3 &&
+                                        startText[0] != " " &&
+                                        startText.contains(" ")) {
+                                      setState(() {
+                                        start = startText;
+                                      });
+                                      getStart(start);
+                                    }
+                                    isShowStart = true;
+                                    if (currentStartLength != startLength) {
+                                      removeLayer();
+                                      setState(() {
+                                        isHidden = true;
+                                      });
+                                    }
+                                    startLength = currentStartLength;
+                                  },
+                                  onTap: () {
+                                    getZoom();
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: "Điểm bắt đầu",
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                          color: Colors.black54, fontSize: 16)),
+                                ),
+                              ))
+                            ],
+                          )),
+                      const Padding(
+                          padding: EdgeInsets.only(top: 5, bottom: 5)),
+                      Container(
+                          padding: const EdgeInsets.only(left: 12),
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.blue,
+                              ),
+                              Expanded(
+                                  child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 8),
+                                child: TextField(
+                                  controller: _searchEnd,
+                                  onChanged: (endText) {
+                                    int currentEndLength = endText.length;
+
+                                    if (endText.length >= 3) {
+                                      setState(() {
+                                        end = endText;
+                                      });
+                                      getEnd(end);
+                                    }
+                                    isShowEnd = true;
+                                    if (currentEndLength != endLength) {
+                                      setState(() {
+                                        isHidden = true;
+                                      });
+                                      removeLayer();
+                                    }
+                                    endLength = currentEndLength;
+                                  },
+                                  onTap: () {
+                                    getZoom();
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: "Điểm kết thúc",
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                          color: Colors.black54, fontSize: 16)),
+                                ),
+                              ))
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 4,
+                  ),
+                  width: 50,
+                  height: 50,
+                  decoration: const BoxDecoration(),
+                  child: IconButton(
+                    iconSize: 40,
+                    color: Colors.blue[900],
+                    icon: const Icon(Icons.directions),
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      _fetchData();
+                    },
+                  ),
+                )
+              ],
+            )),
+        isShowStart
+            ? isLocation == false
+                ? Container(
+                    height: 120,
+                    margin: const EdgeInsets.fromLTRB(10, 75, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    decoration: const BoxDecoration(color: Colors.white),
+                    child: _buildListStart(),
+                  )
+                : const Card()
+            : const Card(),
+        isShowEnd
+            ? Container(
+                height: 120,
+                margin: const EdgeInsets.fromLTRB(10, 130, 10, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                decoration: const BoxDecoration(color: Colors.white),
+                child: _buildListEnd(),
+              )
+            : const Card(),
+        isHidden
+            ? const Card()
+            : Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    height: 200,
+                    margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    alignment: Alignment.topLeft,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12))),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 10),
+                      child: ListView(
+                        children: [
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                                text: duration,
+                                style: TextStyle(
+                                    color: Colors.green[800], fontSize: 18)),
+                            TextSpan(
+                                text: ' ($distance) ',
+                                style: const TextStyle(
+                                    color: Colors.black87, fontSize: 18)),
+                          ])),
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                                text: '(Giá tiền dự kiến: $sPriceCust)',
+                                style: const TextStyle(
+                                    color: Colors.black87, fontSize: 18)),
+                          ])),
+                          const Padding(
+                              padding: EdgeInsets.only(
+                            top: 8,
+                          )),
+                          const Text(
+                            'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 16),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Align(
+                            alignment: FractionalOffset.center,
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    width: Buttonsize,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, "/EditDriver");
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.person),
+                                          Text('Chở khách'),
+                                        ],
+                                      ),
+                                      color: Colors.blue,
+                                      textColor: Colors.white,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Midsize,
+                                    height: 55,
+                                  ),
+                                  Container(
+                                    width: Buttonsize,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, "/EditVehicle");
+                                      },
+                                      minWidth: 60,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.motorcycle),
+                                          Text('Người và xe'),
+                                        ],
+                                      ),
+                                      color: Colors.blue,
+                                      textColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+      ],
+    ));
   }
 }
-
-
-// import 'dart:io';
-
-// import 'package:location/location.dart';
-
-// import 'package:flutter/material.dart';
-// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
-// import 'package:stu_customer/screen/autocomplete.dart';
-// import 'package:stu_customer/screen/marker.dart';
-// import 'package:stu_customer/screen/safearea.dart';
-// import 'package:stu_customer/screen/simplemap.dart';
-
-// class FullMap extends StatefulWidget {
-//   const FullMap();
-
-//   @override
-//   State createState() => FullMapState();
-// }
-
-// class FullMapState extends State<FullMap> {
-//   MapboxMap? mapboxMap;
-//   LocationData? _currentLocation;
-
-//   _onMapCreated(MapboxMap mapboxMap) {
-//     this.mapboxMap = mapboxMap;
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   } 
-
-//   // Future<Position> getPuckPosition() async {
-
-//   // }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Stack(children: [
-//           SizedBox(
-//             child: MapWidget(
-//               key: const ValueKey("mapWidget"),
-//               resourceOptions: ResourceOptions(
-//                   accessToken:
-//                       "pk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHE5NzJydjUxbTluMmtyd291NDl3cXE0In0.Nzy-T8d5OZlTVgOId3pyMg"),
-//               cameraOptions: CameraOptions(
-//                   center: Point(coordinates: Position(210.840130, 136.663147))
-//                       .toJson(),
-//                   zoom: 3.0),
-//               styleUri: MapboxStyles.LIGHT,
-//               textureView: true,
-//               onMapCreated: _onMapCreated,
-//             ),
-//           ),
-//         ]),
-//       ),
-//     );
-//   }
-// }
