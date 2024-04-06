@@ -40,8 +40,8 @@ class MyUI extends State<LayoutPage> {
         _currentPage = HomePage();
       } else if (index == 2) {
         _currentPage = FullMap();
-        // } else if (index == 3) {
-        //   _currentPage = ProfilePage();
+      } else if (index == 3) {
+        _currentPage = MakeOrderPage();
       }
     });
   }
