@@ -43,6 +43,8 @@ class FullMapState extends State<FullMap> {
   double? latEnd;
   //Biến xử lý giá tiền
   double? dDistance;
+  //size chieu ngan cua man hinh
+  double? ListSize;
   //lưu kích cỡ của button và khoảng cách ở giữa
   double? Buttonsize;
   double? Midsize;
@@ -53,6 +55,7 @@ class FullMapState extends State<FullMap> {
   bool isShowEnd = false; // hiển thị  list item cuối cùng
   bool isHidden = true;
   bool isLocation = false; // đã lấy được vị trí location
+  bool isOrder = false;
 
   List<dynamic> startPlace = [];
   List<dynamic> startDetails = [];
@@ -86,12 +89,16 @@ class FullMapState extends State<FullMap> {
         isShowStart = true;
       });
     } catch (e) {
-<<<<<<< HEAD
-      // ignore: avoid_print
-=======
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
       print('$e');
     }
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
+  void GetSizeScreen() {
+    //lấy thông tin thiết bị để xử lý kích cỡ của 2 button và khoảng cach ở giữa
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    ListSize = queryData.size.width - 5;
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
@@ -106,31 +113,19 @@ class FullMapState extends State<FullMap> {
       setState(() {
         _location = locationResult;
         loading = false;
-<<<<<<< HEAD
-        isShowStart = true;
-=======
         //isShowStart = true;
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
         isLocation = true;
         lngStart = _location!.longitude;
         latStart = _location!.latitude;
 
         mapboxMap?.setCamera(CameraOptions(
             center: Point(coordinates: Position(lngStart!, latStart!)).toJson(),
-<<<<<<< HEAD
-            zoom: 12.0));
-=======
             zoom: 15.0));
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
         mapboxMap?.flyTo(
             CameraOptions(
                 anchor: ScreenCoordinate(x: 0, y: 0),
-<<<<<<< HEAD
-                zoom: 20,
-=======
                 zoom: 15,
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
                 bearing: 0,
                 pitch: 0),
             MapAnimationOptions(duration: 2000, startDelay: 0));
@@ -188,12 +183,9 @@ class FullMapState extends State<FullMap> {
                 color: Colors.blue,
               ),
               SizedBox(
-                width: 330,
+                width: ListSize,
                 height: 30,
-                child: Text(
-                  coordinate['description'],
-                  softWrap: true,
-                ),
+                child: Text(coordinate['description'], softWrap: true),
               )
             ],
           ),
@@ -214,11 +206,7 @@ class FullMapState extends State<FullMap> {
                             startDetails[index]['geometry']['location']['lng'],
                             startDetails[index]['geometry']['location']['lat']))
                     .toJson(),
-<<<<<<< HEAD
-                zoom: 12.0));
-=======
                 zoom: 15.0));
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -317,11 +305,7 @@ class FullMapState extends State<FullMap> {
                             endDetails[index]['geometry']['location']['lng'],
                             endDetails[index]['geometry']['location']['lat']))
                     .toJson(),
-<<<<<<< HEAD
-                zoom: 12.0));
-=======
                 zoom: 15));
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
 
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -363,11 +347,7 @@ class FullMapState extends State<FullMap> {
   void getZoom() async {
     mapboxMap?.flyTo(
         CameraOptions(
-<<<<<<< HEAD
-          zoom: 13.0,
-=======
           zoom: 15.0,
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
         ),
         MapAnimationOptions(duration: 2000, startDelay: 0));
   }
@@ -394,11 +374,7 @@ class FullMapState extends State<FullMap> {
                 latEnd!,
               )).toJson(),
               infiniteBounds: true),
-<<<<<<< HEAD
-          maxZoom: 13,
-=======
           maxZoom: 15,
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
           minZoom: 0,
           maxPitch: 10,
           minPitch: 0));
@@ -489,6 +465,13 @@ class FullMapState extends State<FullMap> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
+  void MakeOrder() {
+    setState(() {
+      isOrder = true;
+    });
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData;
@@ -496,7 +479,7 @@ class FullMapState extends State<FullMap> {
     Buttonsize = (queryData.size.width / 2) - 35;
     Midsize = queryData.size.width - (Buttonsize! + Buttonsize!) - 35;
     print('Kich cỡ màn hình: $Midsize');
-    _getLocation();
+    //_getLocation();
     return Scaffold(
         body: Stack(
       children: [
@@ -509,11 +492,7 @@ class FullMapState extends State<FullMap> {
             cameraOptions: CameraOptions(
                 center:
                     Point(coordinates: Position(105.83991, 21.02800)).toJson(),
-<<<<<<< HEAD
-                zoom: 14.0),
-=======
                 zoom: 15.0),
->>>>>>> parent of e6ae5ff (Merge remote-tracking branch 'origin/backup-120_1' into BACK_UP-15_1_24)
             styleUri: Mapstyle,
             textureView: true,
             onMapCreated: _onMapCreated,
@@ -649,15 +628,13 @@ class FullMapState extends State<FullMap> {
               ],
             )),
         isShowStart
-            ? isLocation == false
-                ? Container(
-                    height: 120,
-                    margin: const EdgeInsets.fromLTRB(10, 75, 10, 0),
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: _buildListStart(),
-                  )
-                : const Card()
+            ? Container(
+                height: 120,
+                margin: const EdgeInsets.fromLTRB(10, 75, 10, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                decoration: const BoxDecoration(color: Colors.white),
+                child: _buildListStart(),
+              )
             : const Card(),
         isShowEnd
             ? Container(
@@ -670,120 +647,122 @@ class FullMapState extends State<FullMap> {
             : const Card(),
         isHidden
             ? const Card()
-            : Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                    height: 200,
-                    margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    alignment: Alignment.topLeft,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12))),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, top: 10),
-                      child: ListView(
-                        children: [
-                          RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                                text: duration,
+            : isOrder
+                ? const Card()
+                : Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        height: 200,
+                        margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        alignment: Alignment.topLeft,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
+                          child: ListView(
+                            children: [
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: duration,
+                                    style: TextStyle(
+                                        color: Colors.green[800],
+                                        fontSize: 18)),
+                                TextSpan(
+                                    text: ' ($distance) ',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: '(Giá tiền dự kiến: $sPriceCust)',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              const Padding(
+                                  padding: EdgeInsets.only(
+                                top: 8,
+                              )),
+                              const Text(
+                                'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
                                 style: TextStyle(
-                                    color: Colors.green[800], fontSize: 18)),
-                            TextSpan(
-                                text: ' ($distance) ',
-                                style: const TextStyle(
-                                    color: Colors.black87, fontSize: 18)),
-                          ])),
-                          RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                                text: '(Giá tiền dự kiến: $sPriceCust)',
-                                style: const TextStyle(
-                                    color: Colors.black87, fontSize: 18)),
-                          ])),
-                          const Padding(
-                              padding: EdgeInsets.only(
-                            top: 8,
-                          )),
-                          const Text(
-                            'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 16),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Align(
-                            alignment: FractionalOffset.center,
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
+                                    color: Colors.black54, fontSize: 16),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: Buttonsize,
-                                    height: 55,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, "/EditDriver");
-                                      },
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(Icons.person),
-                                          Text('Chở khách'),
-                                        ],
-                                      ),
-                                      color: Colors.blue,
-                                      textColor: Colors.white,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: Midsize,
-                                    height: 55,
-                                  ),
-                                  Container(
-                                    width: Buttonsize,
-                                    height: 55,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, "/EditVehicle");
-                                      },
-                                      minWidth: 60,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(Icons.motorcycle),
-                                          Text('Người và xe'),
-                                        ],
-                                      ),
-                                      color: Colors.blue,
-                                      textColor: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                              const SizedBox(
+                                height: 30,
                               ),
-                            ),
+                              Align(
+                                alignment: FractionalOffset.center,
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: Buttonsize,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            MakeOrder();
+                                          },
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.person),
+                                              Text('Chở khách'),
+                                            ],
+                                          ),
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: Midsize,
+                                        height: 55,
+                                      ),
+                                      Container(
+                                        width: Buttonsize,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, "/EditVehicle");
+                                          },
+                                          minWidth: 60,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.motorcycle),
+                                              Text('Người và xe'),
+                                            ],
+                                          ),
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )),
-              ),
+                        )),
+                  ),
       ],
     ));
   }
