@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stu_customer/core/utils/size_utils.dart';
 import 'package:stu_customer/screen/Mapview.dart';
@@ -15,6 +16,8 @@ class LayoutPage extends StatefulWidget {
   @override
   MyUI createState() => MyUI(this.body);
 }
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class MyUI extends State<LayoutPage> {
   bool isSwitched = false;
@@ -48,6 +51,23 @@ class MyUI extends State<LayoutPage> {
 
   @override
   Widget build(BuildContext context) {
+    Stream<User?> authStateChanges = _auth.authStateChanges();
+
+    authStateChanges.listen((User? user) {
+      if (user != null) {
+        // Người dùng đã đăng nhập
+        print('Người dùng đã đăng nhập với email: ${user.email}');
+      } else {
+        // Người dùng đã đăng xuất
+        print('Người dùng đã đăng xuất');
+      }
+    });
+
+    User? user = _auth.currentUser;
+    if (user == null) {
+      // Người dùng Chưa đăng nhập đưa về trang đăng nhập
+      Navigator.pushNamed(context, "/login");
+    }
     return Scaffold(
       appBar: CustomAppBar(
         height: getVerticalSize(

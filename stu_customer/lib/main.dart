@@ -1,37 +1,56 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stu_customer/app/splash_screen/splash_screen.dart';
-import 'package:stu_customer/controller/NavigatorController.dart';
-import 'package:stu_customer/screen/home.dart';
-import 'package:stu_customer/screen/layout.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:stu_customer/firebase_options.dart';
+import 'package:stu_customer/splashScreen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
-const kWebRecaptchaSiteKey = '6Lemcn0dAAAAABLkf6aiiHvpGD6x-zF3nOSDU2M8';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => NavigatorController(),
-      child: MyApp(),
+    MyApp(
+      child: MaterialApp(
+        title: 'STU: gọi xe sinh viên',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MySplashScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  final Widget? child;
+
+  MyApp({this.child});
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_MyAppState>()!.restartApp();
+  }
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'STU Driver',
-      routes: {
-        '/': (context) => LayoutPage(body: HomePage()),
-        '/home': (context) => LayoutPage(body: HomePage()),
-      },
+    return KeyedSubtree(
+      key: key,
+      child: widget.child!,
     );
   }
 }

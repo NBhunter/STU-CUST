@@ -472,6 +472,13 @@ class FullMapState extends State<FullMap> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
+  void CancelOrder() {
+    setState(() {
+      isOrder = false;
+    });
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
   @override
   Widget build(BuildContext context) {
     MediaQueryData queryData;
@@ -498,135 +505,142 @@ class FullMapState extends State<FullMap> {
             onMapCreated: _onMapCreated,
           ),
         ),
-        Container(
-            height: 160,
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            decoration: BoxDecoration(color: Colors.grey[200]),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          padding: const EdgeInsets.only(left: 12),
-                          decoration: const BoxDecoration(color: Colors.white),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.circle_outlined,
-                                color: Colors.blue,
-                                size: 20,
-                              ),
-                              Expanded(
-                                  child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
-                                child: TextField(
-                                  controller: _searchStart,
-                                  onChanged: (startText) {
-                                    int currentStartLength = startText.length;
+        isOrder
+            ? const Card()
+            : Container(
+                height: 160,
+                alignment: Alignment.topLeft,
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                decoration: BoxDecoration(color: Colors.grey[200]),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.only(left: 12),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.circle_outlined,
+                                    color: Colors.blue,
+                                    size: 20,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8),
+                                    child: TextField(
+                                      controller: _searchStart,
+                                      onChanged: (startText) {
+                                        int currentStartLength =
+                                            startText.length;
 
-                                    if (startText.length >= 3 &&
-                                        startText[0] != " " &&
-                                        startText.contains(" ")) {
-                                      setState(() {
-                                        start = startText;
-                                      });
-                                      getStart(start);
-                                    }
-                                    isShowStart = true;
-                                    if (currentStartLength != startLength) {
-                                      removeLayer();
-                                      setState(() {
-                                        isHidden = true;
-                                      });
-                                    }
-                                    startLength = currentStartLength;
-                                  },
-                                  onTap: () {
-                                    getZoom();
-                                  },
-                                  decoration: const InputDecoration(
-                                      hintText: "Điểm bắt đầu",
-                                      border: InputBorder.none,
-                                      hintStyle: TextStyle(
-                                          color: Colors.black54, fontSize: 16)),
-                                ),
-                              ))
-                            ],
-                          )),
-                      const Padding(
-                          padding: EdgeInsets.only(top: 5, bottom: 5)),
-                      Container(
-                          padding: const EdgeInsets.only(left: 12),
-                          decoration: const BoxDecoration(color: Colors.white),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.location_on_outlined,
-                                color: Colors.blue,
-                              ),
-                              Expanded(
-                                  child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
-                                child: TextField(
-                                  controller: _searchEnd,
-                                  onChanged: (endText) {
-                                    int currentEndLength = endText.length;
+                                        if (startText.length >= 3 &&
+                                            startText[0] != " " &&
+                                            startText.contains(" ")) {
+                                          setState(() {
+                                            start = startText;
+                                          });
+                                          getStart(start);
+                                        }
+                                        isShowStart = true;
+                                        if (currentStartLength != startLength) {
+                                          removeLayer();
+                                          setState(() {
+                                            isHidden = true;
+                                          });
+                                        }
+                                        startLength = currentStartLength;
+                                      },
+                                      onTap: () {
+                                        getZoom();
+                                      },
+                                      decoration: const InputDecoration(
+                                          hintText: "Điểm bắt đầu",
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 16)),
+                                    ),
+                                  ))
+                                ],
+                              )),
+                          const Padding(
+                              padding: EdgeInsets.only(top: 5, bottom: 5)),
+                          Container(
+                              padding: const EdgeInsets.only(left: 12),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    color: Colors.blue,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8),
+                                    child: TextField(
+                                      controller: _searchEnd,
+                                      onChanged: (endText) {
+                                        int currentEndLength = endText.length;
 
-                                    if (endText.length >= 3) {
-                                      setState(() {
-                                        end = endText;
-                                      });
-                                      getEnd(end);
-                                    }
-                                    isShowEnd = true;
-                                    if (currentEndLength != endLength) {
-                                      setState(() {
-                                        isHidden = true;
-                                      });
-                                      removeLayer();
-                                    }
-                                    endLength = currentEndLength;
-                                  },
-                                  onTap: () {
-                                    getZoom();
-                                  },
-                                  decoration: const InputDecoration(
-                                      hintText: "Điểm kết thúc",
-                                      border: InputBorder.none,
-                                      hintStyle: TextStyle(
-                                          color: Colors.black54, fontSize: 16)),
-                                ),
+                                        if (endText.length >= 3) {
+                                          setState(() {
+                                            end = endText;
+                                          });
+                                          getEnd(end);
+                                        }
+                                        isShowEnd = true;
+                                        if (currentEndLength != endLength) {
+                                          setState(() {
+                                            isHidden = true;
+                                          });
+                                          removeLayer();
+                                        }
+                                        endLength = currentEndLength;
+                                      },
+                                      onTap: () {
+                                        getZoom();
+                                      },
+                                      decoration: const InputDecoration(
+                                          hintText: "Điểm kết thúc",
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 16)),
+                                    ),
+                                  ))
+                                ],
                               ))
-                            ],
-                          ))
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 4,
-                  ),
-                  width: 50,
-                  height: 50,
-                  decoration: const BoxDecoration(),
-                  child: IconButton(
-                    iconSize: 40,
-                    color: Colors.blue[900],
-                    icon: const Icon(Icons.directions),
-                    onPressed: () {
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      _fetchData();
-                    },
-                  ),
-                )
-              ],
-            )),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 4,
+                      ),
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(),
+                      child: IconButton(
+                        iconSize: 40,
+                        color: Colors.blue[900],
+                        icon: const Icon(Icons.directions),
+                        onPressed: () {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          _fetchData();
+                        },
+                      ),
+                    )
+                  ],
+                )),
         isShowStart
             ? Container(
                 height: 120,
@@ -648,7 +662,90 @@ class FullMapState extends State<FullMap> {
         isHidden
             ? const Card()
             : isOrder
-                ? const Card()
+                ? Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        height: 200,
+                        margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        alignment: Alignment.topLeft,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
+                          child: ListView(
+                            children: [
+                              // RichText(
+                              //     text: TextSpan(children: [
+                              //   TextSpan(
+                              //       text: _searchEnd.text,
+                              //       style: const TextStyle(
+                              //           color: Colors.black87, fontSize: 18)),
+                              // ])),
+                              const LinearProgressIndicator(),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: 'Đang tìm tài xế...',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              const Padding(
+                                  padding: EdgeInsets.only(
+                                top: 8,
+                              )),
+                              const Text(
+                                'Vui lòng chờ trong 1 - 3 phút',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 16),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Align(
+                                alignment: FractionalOffset.center,
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: Buttonsize,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            CancelOrder();
+                                          },
+                                          minWidth: 60,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.motorcycle),
+                                              Text('Hủy Tìm kiếm'),
+                                            ],
+                                          ),
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  )
                 : Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
