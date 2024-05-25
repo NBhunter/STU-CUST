@@ -53,6 +53,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   firebase_messaging: ^14.7.10
   fluttertoast: ^8.2.5
+  recase: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,10 @@ flutter:
   assets:
       - lib/images/Background_Login_user.jpg
       - lib/images/stu_logo.png
+      - lib/images/google.png
+      - lib/images/phone-call.png
+      - lib/images/Icon_Home/bike_Icon.png
+      - lib/images/Icon_Home/Shiping_Icon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

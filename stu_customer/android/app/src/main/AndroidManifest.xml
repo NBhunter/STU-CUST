@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="stu_customer"
+        android:label="STU: Gọi xe sinh viên"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
