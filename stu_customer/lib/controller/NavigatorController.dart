@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stu_customer/screen/home.dart';
+import 'package:stu_customer/screenOld/home.dart';
 
 class NavigatorController extends ChangeNotifier {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

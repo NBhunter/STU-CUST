@@ -1,5 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-//import 'package:stu_driver/screen(Old)/map/MapView.dart';
+import 'package:flutter/services.dart';
+import 'package:location/location.dart';
+import 'package:stu_customer/global/global.dart';
+import 'package:stu_customer/global/map_key.dart';
+import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
+import 'package:stu_customer/tabPages/order_ride_tab.dart';
+import 'package:http/http.dart' as http;
+
+import '../mainScreens/search_places_screen.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
@@ -9,10 +19,46 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
+  final Location location = Location();
+  // dữ liệu location của thiết bị
+  late LocationData _location;
+  double? lngUser;
+  double? latUser;
+  List<dynamic> startDetails = [];
+
+  //Erro check
+  String? error;
+
+  void _getLocation() async {
+    try {
+      final locationResult = await location.getLocation();
+      setState(() async {
+        _location = locationResult;
+        lngUser = locationResult.longitude!;
+        latUser = locationResult.latitude!;
+
+        final url = Uri.parse(
+            'https://rsapi.goong.io/geocode?latlng=${lngUser},${lngUser}&api_key=${mapKey}');
+
+        var response = await http.get(url);
+        final jsonResponse = jsonDecode(response.body);
+
+        // ignore: unused_local_variable
+        startDetails = jsonResponse['results'] as List<dynamic>;
+
+        startDetails[0]['formatted_address'];
+      });
+    } on PlatformException catch (err) {
+      setState(() {
+        error = err.code;
+        print(error);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      reverse: true,
       child: ConstrainedBox(
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width,
@@ -22,14 +68,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.020,
-              ),
               Stack(
                 children: [
                   Container(
                     width: 450,
-                    height: 73,
+                    height: 80,
                     decoration: BoxDecoration(
                       color: Color(0xFF58B7EC),
                       boxShadow: [
@@ -44,7 +87,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   ),
                   Column(children: [
                     Text(
-                      'Xin chào Băng Nguyễn',
+                      userModelCurrentInfo?.name != null
+                          ? 'Xin chào ${userModelCurrentInfo!.name}'
+                          : 'Xin chào người dùng',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -69,22 +114,40 @@ class _HomeTabPageState extends State<HomeTabPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.020,
               ),
-              Container(
-                width: 389,
-                height: 57,
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) => SearchLocationTitlePage()));
+                },
+                child: Container(
+                  width: 389,
+                  height: 57,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 4,
+                        offset: Offset(0, 4),
+                        spreadRadius: 0,
+                      )
+                    ],
                   ),
-                  shadows: [
-                    BoxShadow(
-                      color: Color(0x3F000000),
-                      blurRadius: 4,
-                      offset: Offset(0, 4),
-                      spreadRadius: 0,
-                    )
-                  ],
+                  child: const Text(
+                    '    Bạn muốn đi đâu ?',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 5, 5, 5),
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      height: 2.3,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(

@@ -1,5 +1,5 @@
-import 'package:stu_customer/screen/Map/change_settings.dart';
-import 'package:stu_customer/screen/Map/enable_in_background.dart';
+import 'package:stu_customer/screenOld/Map/change_settings.dart';
+import 'package:stu_customer/screenOld/Map/enable_in_background.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';

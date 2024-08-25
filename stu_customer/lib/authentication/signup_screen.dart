@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       };
 
       DatabaseReference driversRef =
-          FirebaseDatabase.instance.ref().child("users");
+          FirebaseDatabase.instance.ref().child("Users");
       driversRef.child(firebaseUser.uid).set(userMap);
 
       currentFirebaseUser = firebaseUser;

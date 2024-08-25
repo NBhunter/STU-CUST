@@ -32,16 +32,20 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: tabController,
-        children: [
-          HomeTabPage(),
-          EarningsTabPage(),
-          OrderTabPage(),
-          ProfileTabPage(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        child: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: tabController,
+          children: [
+            HomeTabPage(),
+            EarningsTabPage(),
+            OrderTabPage(),
+            ProfileTabPage(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -72,5 +76,44 @@ class _MainScreenState extends State<MainScreen>
         onTap: onItemClicked,
       ),
     );
+    // TabBarView(
+    //     physics: const NeverScrollableScrollPhysics(),
+    //     controller: tabController,
+    //     children: [
+    //       HomeTabPage(),
+    //       EarningsTabPage(),
+    //       OrderTabPage(),
+    //       ProfileTabPage(),
+    //     ],
+    //   ),
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     items: const [
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.home),
+    //         label: "Trang chủ",
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.receipt_long),
+    //         label: "Hoạt động",
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.message),
+    //         label: "Tin nhắn",
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.person),
+    //         label: "Hồ sơ",
+    //       ),
+    //     ],
+    //     unselectedItemColor: Colors.blueGrey,
+    //     selectedItemColor: Colors.blue,
+    //     backgroundColor: Colors.white,
+    //     type: BottomNavigationBarType.fixed,
+    //     selectedLabelStyle: const TextStyle(fontSize: 14),
+    //     showUnselectedLabels: true,
+    //     currentIndex: selectedIndex,
+    //     onTap: onItemClicked,
+    //   ),
+    // );
   }
 }

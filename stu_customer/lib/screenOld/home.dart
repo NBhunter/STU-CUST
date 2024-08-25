@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stu_customer/component/gridItem.dart';
 import 'package:stu_customer/core/utils/image_constant.dart';
 import 'package:stu_customer/core/utils/size_utils.dart';
-import 'package:stu_customer/screen/widgets/custom_image_view.dart';
-import 'package:stu_customer/screen/widgets/custom_search_view.dart';
-import 'package:stu_customer/screen/widgets/listfavorite_item_widget.dart';
-import 'package:stu_customer/screen/widgets/listpngwing_item_widget.dart';
+import 'package:stu_customer/screenOld/widgets/custom_image_view.dart';
+import 'package:stu_customer/screenOld/widgets/custom_search_view.dart';
+import 'package:stu_customer/screenOld/widgets/listfavorite_item_widget.dart';
+import 'package:stu_customer/screenOld/widgets/listpngwing_item_widget.dart';
 import 'package:stu_customer/theme/app_style.dart';
 
 class HomePage extends StatelessWidget {

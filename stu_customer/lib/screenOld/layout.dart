@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stu_customer/core/utils/size_utils.dart';
-import 'package:stu_customer/screen/Mapview.dart';
-import 'package:stu_customer/screen/home.dart';
-import 'package:stu_customer/screen/make_order.dart';
-import 'package:stu_customer/screen/widgets/appbar_image.dart';
-import 'package:stu_customer/screen/widgets/custom_app_bar.dart';
+import 'package:stu_customer/screenOld/Mapview.dart';
+import 'package:stu_customer/screenOld/home.dart';
+import 'package:stu_customer/screenOld/make_order.dart';
+import 'package:stu_customer/screenOld/widgets/appbar_image.dart';
+import 'package:stu_customer/screenOld/widgets/custom_app_bar.dart';
 import 'package:stu_customer/theme/app_style.dart';
 import 'package:stu_customer/core/app_export.dart';
 

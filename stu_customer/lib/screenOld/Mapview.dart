@@ -12,7 +12,7 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:stu_customer/firebase_options.dart';
-import 'package:stu_customer/screen/Map/get_location.dart';
+import 'package:stu_customer/screenOld/Map/get_location.dart';
 
 class FullMap extends StatefulWidget {
   const FullMap({super.key});
@@ -37,6 +37,8 @@ class FullMapState extends State<FullMap> {
   String sPriceCust = ""; // giá tiền chở khách
   String sPriceC_D = ""; // giá tiền chở khách và xe
 
+  double? lngUser;
+  double? latUser;
   double? lngStart;
   double? latStart;
   double? lngEnd;
@@ -115,49 +117,15 @@ class FullMapState extends State<FullMap> {
         loading = false;
         //isShowStart = true;
         isLocation = true;
-        lngStart = _location!.longitude;
-        latStart = _location!.latitude;
-
-        mapboxMap?.setCamera(CameraOptions(
-            center: Point(coordinates: Position(lngStart!, latStart!)).toJson(),
-            zoom: 15.0));
-
-        mapboxMap?.flyTo(
-            CameraOptions(
-                anchor: ScreenCoordinate(x: 0, y: 0),
-                zoom: 15,
-                bearing: 0,
-                pitch: 0),
-            MapAnimationOptions(duration: 2000, startDelay: 0));
-        mapboxMap?.annotations
-            .createCircleAnnotationManager()
-            .then((value) async {
-          setState(() {
-            _circleAnnotationManagerStart =
-                value; // Store the reference to the circle annotation manager
-            lngStart = lngStart!;
-            latStart = latStart!;
-          });
-          var pointAnnotationStart = value;
-          value.create(
-            CircleAnnotationOptions(
-              geometry: Point(
-                  coordinates: Position(
-                lngStart!,
-                latStart!,
-              )).toJson(),
-              circleColor: Colors.blue.value,
-              circleRadius: 12.0,
-            ),
-          );
-        });
+        lngUser = _location!.longitude;
+        latUser = _location!.latitude;
       });
-      final url = Uri.parse(
-          'https://rsapi.goong.io/geocode?latlng=${latStart},%${lngStart}&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
-      var response = await http.get(url);
-      final jsonResponse = jsonDecode(response.body);
-      startDetails = jsonResponse['results'] as List<dynamic>;
-      _searchStart.text = "Vị trí thiết bị";
+      // final url = Uri.parse(
+      //     'https://rsapi.goong.io/geocode?latlng=${latStart},%${lngStart}&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+      // var response = await http.get(url);
+      // final jsonResponse = jsonDecode(response.body);
+      // startDetails = jsonResponse['results'] as List<dynamic>;
+      // _searchStart.text = "Vị trí thiết bị";
     } on PlatformException catch (err) {
       setState(() {
         error = err.code;
@@ -173,7 +141,7 @@ class FullMapState extends State<FullMap> {
       itemCount: startPlace.length,
       itemBuilder: (context, index) {
         final coordinate = startPlace[index];
-
+        _getLocation();
         return ListTile(
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.start,
