@@ -73,7 +73,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   Container(
                     width: 450,
                     height: 80,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF58B7EC),
                       boxShadow: [
                         BoxShadow(
