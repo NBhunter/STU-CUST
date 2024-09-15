@@ -88,17 +88,17 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   Column(children: [
                     Text(
                       userModelCurrentInfo?.name != null
-                          ? 'Xin chào ${userModelCurrentInfo!.name}'
-                          : 'Xin chào người dùng',
+                          ? '   Xin chào ${userModelCurrentInfo!.name}'
+                          : '   Xin chào người dùng',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
                         fontFamily: 'Inter',
                         height: 0,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Chúc 1 ngày tốt lành',
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -119,11 +119,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
+                          // ignore: prefer_const_constructors
                           builder: (c) => SearchLocationTitlePage()));
                 },
                 child: Container(
-                  width: 389,
-                  height: 57,
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  height: MediaQuery.of(context).size.width * 0.15,
                   decoration: ShapeDecoration(
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -155,12 +156,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 76,
+                height: MediaQuery.of(context).size.height / 7,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.24,
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
@@ -172,10 +173,15 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         child: Column(
                           children: [
                             Container(
-                              width: 55,
-                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.24,
+                              height: MediaQuery.of(context).size.width * 0.13,
                               decoration: ShapeDecoration(
-                                color: Color(0xFF69C1F3),
+                                color: const Color.fromARGB(
+                                  255,
+                                  201,
+                                  219,
+                                  228,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -201,9 +207,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.06),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.013),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.24,
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
@@ -215,10 +221,15 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         child: Column(
                           children: [
                             Container(
-                              width: 55,
-                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.24,
+                              height: MediaQuery.of(context).size.width * 0.13,
                               decoration: ShapeDecoration(
-                                color: Color(0xFF69C1F3),
+                                color: const Color.fromARGB(
+                                  255,
+                                  201,
+                                  219,
+                                  228,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -244,9 +255,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.06),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.013),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.24,
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
@@ -258,10 +269,15 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         child: Column(
                           children: [
                             Container(
-                              width: 55,
-                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.24,
+                              height: MediaQuery.of(context).size.width * 0.13,
                               decoration: ShapeDecoration(
-                                color: Color(0xFF69C1F3),
+                                color: const Color.fromARGB(
+                                  255,
+                                  201,
+                                  219,
+                                  228,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -287,9 +303,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.06),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.013),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.24,
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
@@ -301,10 +317,15 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         child: Column(
                           children: [
                             Container(
-                              width: 55,
-                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.24,
+                              height: MediaQuery.of(context).size.width * 0.13,
                               decoration: ShapeDecoration(
-                                color: Color(0xFF69C1F3),
+                                color: const Color.fromARGB(
+                                  255,
+                                  201,
+                                  219,
+                                  228,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

@@ -55,7 +55,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
         getPlaceDirectionDetails(predictedPlaces!.place_id, context);
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.white24,
+        backgroundColor: Colors.white24,
       ),
       child: Padding(
         padding: const EdgeInsets.all(4.0),

@@ -58,7 +58,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("lib/images/Background_Login_user.jpg"),
+            image: AssetImage("lib/images/Loading.jpg"),
             fit: BoxFit.fill,
           ),
         ),
