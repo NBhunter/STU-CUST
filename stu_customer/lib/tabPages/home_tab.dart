@@ -9,8 +9,6 @@ import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
 import 'package:stu_customer/tabPages/order_ride_tab.dart';
 import 'package:http/http.dart' as http;
 
-import '../mainScreens/search_places_screen.dart';
-
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
 
@@ -28,6 +26,35 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   //Erro check
   String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestLocationPermission();
+  }
+
+  void _requestLocationPermission() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _getLocation();
+  }
 
   void _getLocation() async {
     try {
@@ -51,6 +78,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
     } on PlatformException catch (err) {
       setState(() {
         error = err.code;
+        if (err.code == 'PERMISSION_DENIED') {
+          error = 'Permission denied';
+        }
         print(error);
       });
     }
