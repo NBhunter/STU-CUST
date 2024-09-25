@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:location/location.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/global/map_key.dart';
 import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
-import 'package:stu_customer/tabPages/order_ride_tab.dart';
 import 'package:http/http.dart' as http;
 
 class HomeTabPage extends StatefulWidget {
@@ -19,7 +20,6 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage> {
   final Location location = Location();
   // dữ liệu location của thiết bị
-  late LocationData _location;
   double? lngUser;
   double? latUser;
   List<dynamic> startDetails = [];
@@ -34,21 +34,21 @@ class _HomeTabPageState extends State<HomeTabPage> {
   }
 
   void _requestLocationPermission() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
@@ -60,12 +60,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
     try {
       final locationResult = await location.getLocation();
       setState(() async {
-        _location = locationResult;
         lngUser = locationResult.longitude!;
         latUser = locationResult.latitude!;
 
         final url = Uri.parse(
-            'https://rsapi.goong.io/geocode?latlng=${lngUser},${lngUser}&api_key=${mapKey}');
+            'https://rsapi.goong.io/geocode?latlng=$lngUser,$lngUser&api_key=$mapKey');
 
         var response = await http.get(url);
         final jsonResponse = jsonDecode(response.body);
@@ -184,7 +183,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.020,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 7,
                 child: Row(
@@ -195,10 +194,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
-                          shadowColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
+                          shadowColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
                         ),
                         child: Column(
                           children: [
@@ -243,10 +242,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
-                          shadowColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
+                          shadowColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
                         ),
                         child: Column(
                           children: [
@@ -291,10 +290,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
-                          shadowColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
+                          shadowColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
                         ),
                         child: Column(
                           children: [
@@ -339,10 +338,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       child: ElevatedButton(
                         onPressed: () => {print("click in bike")},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
-                          shadowColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(0, 255, 255, 255)),
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
+                          shadowColor: WidgetStateProperty.all<Color>(
+                              const Color.fromARGB(0, 255, 255, 255)),
                         ),
                         child: Column(
                           children: [
@@ -387,7 +386,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.020,
               ),
-              Container(
+              SizedBox(
                 width: 389,
                 height: 124,
                 child: Stack(
@@ -395,7 +394,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     Positioned(
                       left: 0,
                       top: 0,
-                      child: Container(
+                      child: SizedBox(
                         width: 195,
                         height: 124,
                         child: Stack(
@@ -407,14 +406,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                 width: 195,
                                 height: 124,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFFD9D9D9),
+                                  color: const Color(0xFFD9D9D9),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
                             ),
-                            Positioned(
+                            const Positioned(
                               left: 44,
                               top: 33,
                               child: Text(
@@ -435,7 +434,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     Positioned(
                       left: 207,
                       top: 0,
-                      child: Container(
+                      child: SizedBox(
                         width: 182,
                         height: 124,
                         child: Stack(
@@ -447,14 +446,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                 width: 182,
                                 height: 124,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFFD9D9D9),
+                                  color: const Color(0xFFD9D9D9),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
                             ),
-                            Positioned(
+                            const Positioned(
                               left: 37,
                               top: 37,
                               child: Text(
@@ -478,7 +477,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.020,
               ),
-              Container(
+              SizedBox(
                 width: 389,
                 height: 124,
                 child: Stack(
@@ -490,14 +489,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         width: 389,
                         height: 124,
                         decoration: ShapeDecoration(
-                          color: Color(0xFFD9D9D9),
+                          color: const Color(0xFFD9D9D9),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       left: 178,
                       top: 44,
                       child: Text(
@@ -517,7 +516,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.020,
               ),
-              Container(
+              SizedBox(
                 width: 389,
                 height: 237,
                 child: Stack(
@@ -529,14 +528,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         width: 389,
                         height: 237,
                         decoration: ShapeDecoration(
-                          color: Color(0xFFD9D9D9),
+                          color: const Color(0xFFD9D9D9),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       left: 27,
                       top: 97,
                       child: Text(

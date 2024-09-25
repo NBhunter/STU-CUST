@@ -1,11 +1,11 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:stu_customer/global/map_key.dart';
 
@@ -62,7 +62,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   List<dynamic> endPlace = []; // Nơi kết thúc
   List<dynamic> endDetails = []; // Chi tiết nơi kết thúc
 
-  // ignore: non_constant_identifier_names
   String? StartPlaceName;
 
   String end = "";
@@ -91,7 +90,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
 
       print('ScreenSize : $HeightScreenSize , $WidthScreenSize');
     } catch (e) {
-      // ignore: avoid_print
       print('$e');
     }
   }
@@ -146,7 +144,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   Future<void> getProposePlace(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=${mapKey}&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
       var response = await http.get(url);
       setState(() {
         final jsonResponse = jsonDecode(response.body);
@@ -154,7 +152,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
         isShowEnd = true;
       });
     } catch (e) {
-      // ignore: avoid_print
       print('$e');
     }
   }
@@ -166,10 +163,9 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
       itemBuilder: (context, index) {
         final coordinate = endPlace[index];
 
-        // ignore: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
-        String _PlaceSubtitle;
+        String PlaceSubtitle;
 
-        _PlaceSubtitle =
+        PlaceSubtitle =
             coordinate['structured_formatting']['secondary_text']!.toString();
 
         return Column(
@@ -201,7 +197,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                         ),
                         Text(
                           // coordinate['structured_formatting']['secondary_text'],
-                          _PlaceSubtitle,
+                          PlaceSubtitle,
                           softWrap: false, textAlign: TextAlign.left,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 90, 90, 90),
@@ -237,7 +233,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                 if (_searchEnd.text.isEmpty) {
                 } else if (_searchStart.text.isEmpty) {
                 } else {
-                  // ignore: use_build_context_synchronously
                   Navigator.push(
                       context,
                       MaterialPageRoute(

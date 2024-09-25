@@ -1,12 +1,14 @@
+// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:stu_customer/authentication/login_screen.dart';
-import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/tabPages/home_tab.dart';
 import 'package:stu_customer/tabPages/earning_tab.dart';
 import 'package:stu_customer/tabPages/order_tab.dart';
 import 'package:stu_customer/tabPages/profile_tab.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
