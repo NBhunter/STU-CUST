@@ -1,18 +1,16 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show PlatformException, rootBundle;
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:stu_customer/firebase_options.dart';
 import 'package:stu_customer/global/map_key.dart';
-import 'package:stu_customer/screenOld/Map/get_location.dart';
 
 class OrderRideTabPage extends StatefulWidget {
   const OrderRideTabPage({super.key});
@@ -74,16 +72,15 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
 
   bool loading = false;
   // dữ liệu location của thiết bị
-  late LocationData _location;
   String? error;
   //format giá tiền
-  final oCcy = new NumberFormat("#,##0đ", "vi_VN");
+  final oCcy = NumberFormat("#,##0đ", "vi_VN");
   PolylinePoints polylinePoints = PolylinePoints();
   /*------------------------------------------------------------------------------------------------------------------*/
   Future<void> getStart(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=${mapKey}&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
       var response = await http.get(url);
       setState(() {
         final jsonResponse = jsonDecode(response.body);
@@ -109,7 +106,6 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
     try {
       final locationResult = await location.getLocation();
       setState(() async {
-        _location = locationResult;
         loading = false;
         // isShowStart = true;
         isLocation = true;
@@ -117,7 +113,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
         latUser = locationResult.latitude!;
 
         final url = Uri.parse(
-            'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=${mapKey}');
+            'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=$mapKey');
         var response = await http.get(url);
         final jsonResponse = jsonDecode(response.body);
 
@@ -149,7 +145,6 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
             lngStart = startDetails[0]['geometry']['location']['lng'];
             latStart = startDetails[0]['geometry']['location']['lat'];
           });
-          var pointAnnotationStart = value;
           value.create(
             CircleAnnotationOptions(
               geometry: Point(
@@ -201,7 +196,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
               isShowStart = false;
             });
             final url = Uri.parse(
-                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=${mapKey}');
+                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
             var response = await http.get(url);
             final jsonResponse = jsonDecode(response.body);
             startDetails = jsonResponse['results'] as List<dynamic>;
@@ -231,7 +226,6 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                 lngStart = startDetails[index]['geometry']['location']['lng'];
                 latStart = startDetails[index]['geometry']['location']['lat'];
               });
-              var pointAnnotationStart = value;
               value.create(
                 CircleAnnotationOptions(
                   geometry: Point(
@@ -255,7 +249,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
   Future<void> getEnd(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=${mapKey}&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&location=$latUser,$lngUser&radius=25&limit=10&input=$input');
       var response = await http.get(url);
       setState(() {
         final jsonResponse = jsonDecode(response.body);
@@ -264,7 +258,6 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
         isShowEnd = true;
       });
     } catch (e) {
-      // ignore: avoid_print
       print('$e');
     }
   }
@@ -300,7 +293,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
             });
 
             final url = Uri.parse(
-                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=${mapKey}');
+                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
             var response = await http.get(url);
             final jsonResponse = jsonDecode(response.body);
             endDetails = jsonResponse['results'] as List<dynamic>;
@@ -642,7 +635,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                         color: Colors.blue[900],
                         icon: const Icon(Icons.directions),
                         onPressed: () {
-                          FocusScope.of(context).requestFocus(new FocusNode());
+                          FocusScope.of(context).requestFocus(FocusNode());
                           _fetchData();
                         },
                       ),
@@ -696,10 +689,10 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                               // ])),
                               const LinearProgressIndicator(),
                               RichText(
-                                  text: TextSpan(children: [
+                                  text: const TextSpan(children: [
                                 TextSpan(
                                     text: 'Đang tìm tài xế...',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: Colors.black87, fontSize: 18)),
                               ])),
                               const Padding(
@@ -718,7 +711,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                 alignment: FractionalOffset.center,
                                 child: Container(
                                   height: 50,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.transparent,
                                   ),
                                   child: Row(
@@ -727,7 +720,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                       Container(
                                         width: Buttonsize,
                                         height: 55,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.transparent,
                                         ),
                                         child: MaterialButton(
@@ -735,15 +728,15 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                             CancelOrder();
                                           },
                                           minWidth: 60,
-                                          child: Row(
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                          child: const Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Icon(Icons.motorcycle),
                                               Text('Hủy Tìm kiếm'),
                                             ],
                                           ),
-                                          color: Colors.blue,
-                                          textColor: Colors.white,
                                         ),
                                       ),
                                     ],
@@ -806,7 +799,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                 alignment: FractionalOffset.center,
                                 child: Container(
                                   height: 50,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.transparent,
                                   ),
                                   child: Row(
@@ -815,32 +808,32 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                       Container(
                                         width: Buttonsize,
                                         height: 55,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.transparent,
                                         ),
                                         child: MaterialButton(
                                           onPressed: () {
                                             MakeOrder();
                                           },
-                                          child: Row(
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                          child: const Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Icon(Icons.person),
                                               Text('Chở khách'),
                                             ],
                                           ),
-                                          color: Colors.blue,
-                                          textColor: Colors.white,
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: Midsize,
                                         height: 55,
                                       ),
                                       Container(
                                         width: Buttonsize,
                                         height: 55,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.transparent,
                                         ),
                                         child: MaterialButton(
@@ -849,15 +842,15 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                                                 context, "/EditVehicle");
                                           },
                                           minWidth: 60,
-                                          child: Row(
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                          child: const Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Icon(Icons.motorcycle),
                                               Text('Người và xe'),
                                             ],
                                           ),
-                                          color: Colors.blue,
-                                          textColor: Colors.white,
                                         ),
                                       ),
                                     ],
