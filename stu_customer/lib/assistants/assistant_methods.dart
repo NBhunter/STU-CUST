@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ import 'package:stu_customer/global/map_key.dart';
 import 'package:stu_customer/infoHandler/app_info.dart';
 import 'package:stu_customer/models/direction_details_info.dart';
 import 'package:stu_customer/models/directions.dart';
-import 'package:stu_customer/models/user_model.dart';
 
 class AssistantMethods {
   static Future<String> searchAddressForGeographicCoOrdinates(
@@ -44,9 +42,7 @@ class AssistantMethods {
         .child(currentFirebaseUser!.uid);
 
     userRef.once().then((snap) {
-      if (snap.snapshot.value != null) {
-        var userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
-      }
+      if (snap.snapshot.value != null) {}
     });
   }
 

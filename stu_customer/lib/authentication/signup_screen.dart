@@ -1,13 +1,16 @@
+// ignore_for_file: library_private_types_in_public_api, non_constant_identifier_names, use_build_context_synchronously, prefer_interpolation_to_compose_strings, body_might_complete_normally_catch_error
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:stu_customer/authentication/login_screen.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/splashScreen/splash_screen.dart';
 import 'package:stu_customer/widgets/progress_dialog.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -69,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       currentFirebaseUser = firebaseUser;
       Fluttertoast.showToast(msg: "Account has been Created.");
       Navigator.push(
-          context, MaterialPageRoute(builder: (c) => MySplashScreen()));
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     } else {
       Navigator.pop(context);
       Fluttertoast.showToast(msg: "Account has not been Created.");
@@ -84,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Stack(
           children: [
             Positioned(
@@ -104,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Positioned(
               left: 0,
               top: 0,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: SingleChildScrollView(
@@ -133,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       (MediaQuery.of(context).size.height / 7) *
                                           6.34,
                                   decoration: ShapeDecoration(
-                                    color: Color(0xB2D3CBCB),
+                                    color: const Color(0xB2D3CBCB),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(17),
                                     ),
@@ -175,9 +178,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       onPressed: () {},
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 Colors.white),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -188,7 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -234,9 +237,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       onPressed: () {},
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 const Color(0xffc7dbe6)),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -247,7 +250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -453,9 +456,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 const Color(0xff044ab2)),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -466,7 +469,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -494,7 +497,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (c) =>
-                                                    SignUpScreen()));
+                                                    const SignUpScreen()));
                                       },
                                     ),
                                   ],

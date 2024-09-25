@@ -1,5 +1,6 @@
+// ignore_for_file: library_private_types_in_public_api, non_constant_identifier_names, use_build_context_synchronously, prefer_interpolation_to_compose_strings, body_might_complete_normally_catch_error
+
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/gestures.dart';
 import 'package:stu_customer/authentication/signup_screen.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/splashScreen/splash_screen.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -80,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Stack(
           children: [
             Positioned(
@@ -100,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Positioned(
               left: 0,
               top: 0,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: SingleChildScrollView(
@@ -129,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           10) *
                                       6.34,
                                   decoration: ShapeDecoration(
-                                    color: Color(0xB2D3CBCB),
+                                    color: const Color(0xB2D3CBCB),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(17),
                                     ),
@@ -159,9 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: () {},
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 Colors.white),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -172,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -218,9 +221,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: () {},
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 const Color(0xffc7dbe6)),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -231,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
@@ -375,9 +378,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 const Color(0xff044ab2)),
-                                        fixedSize: MaterialStatePropertyAll(
+                                        fixedSize: WidgetStatePropertyAll(
                                           Size(
                                               MediaQuery.of(context)
                                                       .size
@@ -388,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       .height *
                                                   0.06),
                                         ),
-                                        shape: MaterialStatePropertyAll(
+                                        shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
