@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/global/map_key.dart';
-import 'package:stu_customer/tabPages/SearchView/Select_Order_View.dart';
 import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
 import 'package:http/http.dart' as http;
 
@@ -150,8 +149,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       context,
                       MaterialPageRoute(
                           // ignore: prefer_const_constructors
-                          // builder: (c) => SearchLocationTitlePage()));
-                          builder: (c) => SelectOrder_ViewPage()));
+                          builder: (c) => SearchLocationTitlePage()));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.95,
