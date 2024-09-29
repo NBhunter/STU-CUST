@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "543596770076",
+    "firebase_url": "https://stu-driver-app-db-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "stu-driver-app-db",
+    "storage_bucket": "stu-driver-app-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543596770076:android:7d5ae5f4e55294c262c0d9",
+        "android_client_info": {
+          "package_name": "com.example.stu_customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVpTbDGE4sNvDE5hfpZsnAkCXcO5wDphQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543596770076:android:4dfd3f2450c65d8762c0d9",
+        "android_client_info": {
+          "package_name": "com.example.stu_driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVpTbDGE4sNvDE5hfpZsnAkCXcO5wDphQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

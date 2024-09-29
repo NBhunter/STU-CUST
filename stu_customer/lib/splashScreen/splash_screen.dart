@@ -1,13 +1,16 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, prefer_const_constructors
-
 import 'dart:async';
+import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stu_customer/authentication/login_screen.dart';
+import 'package:stu_customer/authentication/signup_screen.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stu_customer/models/user_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
@@ -19,19 +22,31 @@ class MySplashScreen extends StatefulWidget {
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
     Timer(const Duration(seconds: 3), () async {
-      if (fAuth.currentUser != null) {
+      if (await fAuth.currentUser != null) {
+        var duration = const Duration(seconds: 5);
         currentFirebaseUser = fAuth.currentUser;
         String uid = '/Users/${currentFirebaseUser!.uid}';
         DatabaseReference ref = FirebaseDatabase.instance.ref(uid);
-        DatabaseEvent event = await ref.once();
-        Map<dynamic, dynamic>? data =
-            event.snapshot.value as Map<dynamic, dynamic>?;
-        // ignore: await_only_futures
-        userModelCurrentInfo = UserModel(
-            email: data?["email"],
-            id: data?["id"],
-            name: data?["name"],
-            phone: data?["phone"]);
+        try {
+          DatabaseEvent event =
+              await ref.once().timeout(const Duration(seconds: 10));
+          Map<dynamic, dynamic>? data =
+              event.snapshot.value as Map<dynamic, dynamic>?;
+
+          // ignore: await_only_futures
+          userModelCurrentInfo = UserModel(
+              email: data?["email"],
+              id: data?["id"],
+              name: data?["name"],
+              phone: data?["phone"]);
+        } catch (e) {
+          print('Error: $e');
+          Fluttertoast.showToast(msg: "Đăng nhập hết hạng.");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => LoginScreen()));
+          return;
+        }
+        // ignore: use_build_context_synchronously
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => MainScreen()));
       } else {

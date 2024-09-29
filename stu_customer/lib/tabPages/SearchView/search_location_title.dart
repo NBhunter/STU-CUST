@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/global/map_key.dart';
 
 // ignore: depend_on_referenced_packages
@@ -233,6 +234,11 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                 if (_searchEnd.text.isEmpty) {
                 } else if (_searchStart.text.isEmpty) {
                 } else {
+                  Globals.SetlngStartOrder = lngStart;
+                  Globals.SetlatStartOrder = latStart;
+                  Globals.SetlngEndOrder = lngEnd;
+                  Globals.SetlatEndOrder = latEnd;
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
