@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -22,6 +24,8 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
   double? latStartOrder;
   double? lngEndOrder;
   double? latEndOrder;
+  CircleAnnotationManager? _circleAnnotationManagerStart;
+  CircleAnnotationManager? _circleAnnotationManagerEnd;
   MapboxMap? mapboxMap;
   String duration = "";
   String distance = "";
@@ -41,7 +45,6 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
   final oCcy = NumberFormat("#,##0đ", "vi_VN");
   @override
   void initState() {
-    _fetchData(); // Call _fetchData here
     super.initState();
 
     lngStartOrder = Globals.GetlngStartOrder;
@@ -50,12 +53,82 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
     latEndOrder = Globals.GetlatEndOrder;
   }
 
+  void getZoom() async {
+    mapboxMap?.flyTo(
+        CameraOptions(
+          zoom: 13.0,
+        ),
+        MapAnimationOptions(duration: 2000, startDelay: 0));
+  }
+
 /*------------------------------------------------------------------------------------------------------------------*/
   void _fetchData() async {
     if (latStartOrder != null &&
         lngStartOrder != null &&
         latEndOrder != null &&
-        lngEndOrder != null) {
+        lngEndOrder != null &&
+        isHidden != false) {
+      // // ignore: no_leading_underscores_for_local_identifiers
+      // mapboxMap?.setCamera(CameraOptions(
+      //     center: Point(coordinates: Position(lngStartOrder!, latStartOrder!))
+      //         .toJson(),
+      //     zoom: 15.0));
+// //Created start point
+//       mapboxMap?.flyTo(
+//           CameraOptions(
+//               anchor: ScreenCoordinate(x: 0, y: 0),
+//               zoom: 15,
+//               bearing: 0,
+//               pitch: 0),
+//           MapAnimationOptions(duration: 2000, startDelay: 0));
+//       mapboxMap?.annotations
+//           .createCircleAnnotationManager()
+//           .then((value) async {
+//         setState(() {
+//           _circleAnnotationManagerStart =
+//               value; // Store the reference to the circle annotation manager
+//         });
+
+//         value.create(
+//           CircleAnnotationOptions(
+//             geometry: Point(
+//                 coordinates: Position(
+//               lngStartOrder!,
+//               latStartOrder!,
+//             )).toJson(),
+//             circleColor: Colors.red.value,
+//             circleRadius: 12.0,
+//           ),
+//         );
+//       });
+// //Created End point
+//       mapboxMap?.flyTo(
+//           CameraOptions(
+//               anchor: ScreenCoordinate(x: 0, y: 0),
+//               zoom: 15,
+//               bearing: 0,
+//               pitch: 0),
+//           MapAnimationOptions(duration: 2000, startDelay: 0));
+//       mapboxMap?.annotations
+//           .createCircleAnnotationManager()
+//           .then((value) async {
+//         setState(() {
+//           _circleAnnotationManagerEnd =
+//               value; // Store the reference to the circle annotation manager
+//         });
+
+//         value.create(
+//           CircleAnnotationOptions(
+//             geometry: Point(
+//                 coordinates: Position(
+//               lngEndOrder!,
+//               latEndOrder!,
+//             )).toJson(),
+//             circleColor: Colors.red.value,
+//             circleRadius: 12.0,
+//           ),
+//         );
+//       });
       final url = Uri.parse(
           'https://rsapi.goong.io/Direction?origin=$latStartOrder,$lngStartOrder&destination=$latEndOrder,$lngEndOrder&vehicle=bike&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
       print(url);
@@ -76,7 +149,6 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
           minZoom: 0,
           maxPitch: 10,
           minPitch: 0));
-
       var response = await http.get(url);
       final jsonResponse = jsonDecode(response.body);
       var route = jsonResponse['routes'][0]['overview_polyline']['points'];
@@ -122,6 +194,8 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
      }""";
 
       await mapboxMap?.style.addPersistentStyleLayer(lineLayerJson, null);
+
+      getZoom();
     }
     setState(() {
       isHidden = false;
@@ -153,12 +227,14 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
     }
 
     sPriceCust = oCcy.format(Price);
-    setState(() {});
+    //setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     _fetchData();
+
+    getZoom();
     return Scaffold(
         resizeToAvoidBottomInset: false, // set it to false
         body: Center(
@@ -171,7 +247,9 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
                     accessToken:
                         "pk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHJsd2ZzdmcxMjJuMnFvajVidHJlY3Z1In0.eHLIejIOfAR9K_u2O5dd6g"),
                 cameraOptions: CameraOptions(
-                    center: Point(coordinates: Position(105.83991, 21.02800))
+                    center: Point(
+                            coordinates:
+                                Position(lngStartOrder!, latStartOrder!))
                         .toJson(),
                     zoom: 15.0),
                 styleUri: Mapstyle,
