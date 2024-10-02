@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:stu_customer/assistants/request_assistant.dart';
 import 'package:stu_customer/global/global.dart';
-import 'package:stu_customer/global/map_key.dart';
+import 'package:stu_customer/global/API_Key.dart';
 import 'package:stu_customer/infoHandler/app_info.dart';
 import 'package:stu_customer/models/direction_details_info.dart';
 import 'package:stu_customer/models/directions.dart';

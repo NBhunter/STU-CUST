@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stu_customer/assistants/request_assistant.dart';
-import 'package:stu_customer/global/map_key.dart';
+import 'package:stu_customer/global/API_Key.dart';
 import 'package:stu_customer/infoHandler/app_info.dart';
 import 'package:stu_customer/models/directions.dart';
 import 'package:stu_customer/models/predicted_places.dart';
