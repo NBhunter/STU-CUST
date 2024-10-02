@@ -39,7 +39,7 @@ class FullMapState extends State<AutocompleteMap> {
   Future<void> fetchData(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&input=$input');
 
       var response = await http.get(url);
 
@@ -91,7 +91,7 @@ class FullMapState extends State<AutocompleteMap> {
             });
 
             final url = Uri.parse(
-                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
             var response = await http.get(url);
             final jsonResponse = jsonDecode(response.body);
             details = jsonResponse['results'] as List<dynamic>;

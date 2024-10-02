@@ -69,7 +69,7 @@ class FullMapState extends State<FullMap> {
   Future<void> getStart(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&input=$input');
       var response = await http.get(url);
       setState(() {
         final jsonResponse = jsonDecode(response.body);
@@ -113,7 +113,7 @@ class FullMapState extends State<FullMap> {
             });
 
             final url = Uri.parse(
-                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
             var response = await http.get(url);
             final jsonResponse = jsonDecode(response.body);
             startDetails = jsonResponse['results'] as List<dynamic>;
@@ -166,7 +166,7 @@ class FullMapState extends State<FullMap> {
   Future<void> getEnd(String input) async {
     try {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Place/AutoComplete?api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg&input=$input');
+          'https://rsapi.goong.io/Place/AutoComplete?api_key=$mapKey&input=$input');
       var response = await http.get(url);
       setState(() {
         final jsonResponse = jsonDecode(response.body);
@@ -210,7 +210,7 @@ class FullMapState extends State<FullMap> {
             });
 
             final url = Uri.parse(
-                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+                'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
             var response = await http.get(url);
             final jsonResponse = jsonDecode(response.body);
             endDetails = jsonResponse['results'] as List<dynamic>;
@@ -274,7 +274,7 @@ class FullMapState extends State<FullMap> {
         latEnd != null &&
         lngEnd != null) {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Direction?origin=$latStart,$lngStart&destination=$latEnd,$lngEnd&vehicle=bike&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+          'https://rsapi.goong.io/Direction?origin=$latStart,$lngStart&destination=$latEnd,$lngEnd&vehicle=bike&api_key=$mapKey');
 
       mapboxMap?.setBounds(CameraBoundsOptions(
           bounds: CoordinateBounds(

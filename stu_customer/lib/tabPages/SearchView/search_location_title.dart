@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:stu_customer/global/global.dart';
-import 'package:stu_customer/global/map_key.dart';
+import 'package:stu_customer/global/API_Key.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;

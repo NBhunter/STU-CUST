@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
-import 'package:stu_customer/global/map_key.dart';
+import 'package:stu_customer/global/API_Key.dart';
 
 class OrderRideTabPage extends StatefulWidget {
   const OrderRideTabPage({super.key});
@@ -359,7 +359,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
         latEnd != null &&
         lngEnd != null) {
       final url = Uri.parse(
-          'https://rsapi.goong.io/Direction?origin=$latStart,$lngStart&destination=$latEnd,$lngEnd&vehicle=bike&api_key=ssA2OE41HQgN5nFdk7AtOCAqf2cyI5CMLR9M9VCg');
+          'https://rsapi.goong.io/Direction?origin=$latStart,$lngStart&destination=$latEnd,$lngEnd&vehicle=bike&api_key=$mapKey');
 
       mapboxMap?.setBounds(CameraBoundsOptions(
           bounds: CoordinateBounds(
