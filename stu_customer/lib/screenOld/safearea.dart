@@ -50,10 +50,8 @@ class FullMapState extends State<SafeAreaMap> {
 
       mapboxMap?.setCamera(CameraOptions(
           center: Point(
-                  coordinates: Position(
-                      places[0]['geometry']['location']['lng'],
-                      places[0]['geometry']['location']['lat']))
-              .toJson(),
+              coordinates: Position(places[0]['geometry']['location']['lng'],
+                  places[0]['geometry']['location']['lat'])),
           zoom: 12.0));
 
       mapboxMap?.flyTo(
@@ -75,7 +73,7 @@ class FullMapState extends State<SafeAreaMap> {
                 coordinates: Position(
               places[0]['geometry']['location']['lng'],
               places[0]['geometry']['location']['lat'],
-            )).toJson(),
+            )),
             circleStrokeColor: Colors.red.value,
             circleRadius: 100.0,
             circleOpacity: 0,
@@ -90,10 +88,8 @@ class FullMapState extends State<SafeAreaMap> {
         value.addOnPointAnnotationClickListener(AnnotationClickListener());
         value.create(PointAnnotationOptions(
           geometry: Point(
-                  coordinates: Position(
-                      places[0]['geometry']['location']['lng'],
-                      places[0]['geometry']['location']['lat']))
-              .toJson(),
+              coordinates: Position(places[0]['geometry']['location']['lng'],
+                  places[0]['geometry']['location']['lat'])),
           textField: "",
           textOffset: [0.0, -2.0],
           textColor: Colors.red.value,
@@ -120,10 +116,8 @@ class FullMapState extends State<SafeAreaMap> {
           SizedBox(
             child: MapWidget(
               key: const ValueKey("mapWidget"),
-              resourceOptions: ResourceOptions(accessToken: "{PUBLIC_TOKENS}"),
               cameraOptions: CameraOptions(
-                  center: Point(coordinates: Position(106, 21)).toJson(),
-                  zoom: 5.0),
+                  center: Point(coordinates: Position(106, 21)), zoom: 5.0),
               styleUri: MapboxStyles.DARK,
               textureView: true,
               onMapCreated: _onMapCreated,

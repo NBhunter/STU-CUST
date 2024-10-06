@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:location/location.dart';
 
 void main() {
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: FullMap()));
@@ -102,10 +103,11 @@ class FullMapState extends State<FullMap> {
             // ignore: no_leading_underscores_for_local_identifiers
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates: Position(
-                            startDetails[index]['geometry']['location']['lng'],
-                            startDetails[index]['geometry']['location']['lat']))
-                    .toJson(),
+                  coordinates: Position(
+                    startDetails[index]['geometry']['location']['lng'],
+                    startDetails[index]['geometry']['location']['lat'],
+                  ),
+                ),
                 zoom: 12.0));
 
             mapboxMap?.flyTo(
@@ -131,7 +133,7 @@ class FullMapState extends State<FullMap> {
                       coordinates: Position(
                     startDetails[index]['geometry']['location']['lng'],
                     startDetails[index]['geometry']['location']['lat'],
-                  )).toJson(),
+                  )),
                   circleColor: Colors.blue.value,
                   circleRadius: 12.0,
                 ),
@@ -199,10 +201,9 @@ class FullMapState extends State<FullMap> {
             // ignore: no_leading_underscores_for_local_identifiers
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates: Position(
-                            endDetails[index]['geometry']['location']['lng'],
-                            endDetails[index]['geometry']['location']['lat']))
-                    .toJson(),
+                    coordinates: Position(
+                        endDetails[index]['geometry']['location']['lng'],
+                        endDetails[index]['geometry']['location']['lat'])),
                 zoom: 12.0));
 
             mapboxMap?.flyTo(
@@ -228,7 +229,7 @@ class FullMapState extends State<FullMap> {
                       coordinates: Position(
                     endDetails[index]['geometry']['location']['lng'],
                     endDetails[index]['geometry']['location']['lat'],
-                  )).toJson(),
+                  )),
                   circleColor: Colors.red.value,
                   circleRadius: 12.0,
                 ),
@@ -263,12 +264,12 @@ class FullMapState extends State<FullMap> {
                   coordinates: Position(
                 lngStart!,
                 latStart!,
-              )).toJson(),
+              )),
               northeast: Point(
                   coordinates: Position(
                 lngEnd!,
                 latEnd!,
-              )).toJson(),
+              )),
               infiniteBounds: true),
           maxZoom: 13,
           minZoom: 0,
@@ -337,11 +338,8 @@ class FullMapState extends State<FullMap> {
             SizedBox(
               child: MapWidget(
                 key: const ValueKey("mapWidget"),
-                resourceOptions:
-                    ResourceOptions(accessToken: "{PUBLIC_TOKENS}"),
                 cameraOptions: CameraOptions(
-                    center: Point(coordinates: Position(105.83991, 21.02800))
-                        .toJson(),
+                    center: Point(coordinates: Position(105.83991, 21.02800)),
                     zoom: 14.0),
                 styleUri: MapboxStyles.DARK,
                 textureView: true,

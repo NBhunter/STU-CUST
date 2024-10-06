@@ -139,12 +139,12 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
                   coordinates: Position(
                 lngStartOrder!,
                 latStartOrder!,
-              )).toJson(),
+              )),
               northeast: Point(
                   coordinates: Position(
                 lngEndOrder!,
                 latEndOrder!,
-              )).toJson(),
+              )),
               infiniteBounds: true),
           maxZoom: 15,
           minZoom: 0,
@@ -244,14 +244,9 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
             SizedBox(
               child: MapWidget(
                 key: const ValueKey("mapWidget"),
-                resourceOptions: ResourceOptions(
-                    accessToken:
-                        "pk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHJsd2ZzdmcxMjJuMnFvajVidHJlY3Z1In0.eHLIejIOfAR9K_u2O5dd6g"),
                 cameraOptions: CameraOptions(
                     center: Point(
-                            coordinates:
-                                Position(lngStartOrder!, latStartOrder!))
-                        .toJson(),
+                        coordinates: Position(lngStartOrder!, latStartOrder!)),
                     zoom: 15.0),
                 styleUri: Mapstyle,
                 textureView: true,

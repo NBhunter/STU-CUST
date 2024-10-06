@@ -30,12 +30,9 @@ class FullMapState extends State<SimpleMap> {
           SizedBox(
             child: MapWidget(
               key: const ValueKey("mapWidget"),
-              resourceOptions: ResourceOptions(
-                  accessToken:
-                      "pk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHE5NzJydjUxbTluMmtyd291NDl3cXE0In0.Nzy-T8d5OZlTVgOId3pyMg"),
               cameraOptions: CameraOptions(
-                  center: Point(coordinates: Position(121.8401244, 106.6631431))
-                      .toJson(),
+                  center:
+                      Point(coordinates: Position(121.8401244, 106.6631431)),
                   zoom: 3.0),
               styleUri: MapboxStyles.DARK,
               textureView: true,

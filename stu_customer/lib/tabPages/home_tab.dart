@@ -4,11 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:location/location.dart';
-import 'package:stu_customer/global/global.dart';
-import 'package:stu_customer/global/API_Key.dart';
-import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+import 'package:stu_customer/global/API_Key.dart';
+import 'package:stu_customer/global/global.dart';
+import 'package:stu_customer/tabPages/SearchView/search_location_title.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);

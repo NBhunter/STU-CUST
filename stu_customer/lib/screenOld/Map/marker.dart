@@ -49,7 +49,7 @@ class FullMapState extends State<MarkerMap> {
         final lat = coordinate['lat'];
 
         final options = CircleAnnotationOptions(
-          geometry: Point(coordinates: Position(lng, lat)).toJson(),
+          geometry: Point(coordinates: Position(lng, lat)),
           circleColor: Colors.blue.value,
           circleRadius: 12.0,
         );
@@ -72,9 +72,8 @@ class FullMapState extends State<MarkerMap> {
           onTap: () {
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates:
-                            Position(coordinate['lng'], coordinate['lat']))
-                    .toJson(),
+                    coordinates:
+                        Position(coordinate['lng'], coordinate['lat'])),
                 zoom: 12.0));
             mapboxMap?.flyTo(
                 CameraOptions(
@@ -174,10 +173,8 @@ class FullMapState extends State<MarkerMap> {
           SizedBox(
             child: MapWidget(
               key: const ValueKey("mapWidget"),
-              resourceOptions: ResourceOptions(accessToken: "{PUBLIC_TOKENS}"),
               cameraOptions: CameraOptions(
-                  center:
-                      Point(coordinates: Position(105.8342, 21.0278)).toJson(),
+                  center: Point(coordinates: Position(105.8342, 21.0278)),
                   zoom: 7.0),
               styleUri: MapboxStyles.DARK,
               textureView: true,

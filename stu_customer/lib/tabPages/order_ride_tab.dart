@@ -123,10 +123,9 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
         // ignore: no_leading_underscores_for_local_identifiers
         mapboxMap?.setCamera(CameraOptions(
             center: Point(
-                    coordinates: Position(
-                        startDetails[0]['geometry']['location']['lng'],
-                        startDetails[0]['geometry']['location']['lat']))
-                .toJson(),
+                coordinates: Position(
+                    startDetails[0]['geometry']['location']['lng'],
+                    startDetails[0]['geometry']['location']['lat'])),
             zoom: 15.0));
 
         mapboxMap?.flyTo(
@@ -151,7 +150,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                   coordinates: Position(
                 startDetails[0]['geometry']['location']['lng'],
                 startDetails[0]['geometry']['location']['lat'],
-              )).toJson(),
+              )),
               circleColor: Colors.blue.value,
               circleRadius: 12.0,
             ),
@@ -204,10 +203,9 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
             // ignore: no_leading_underscores_for_local_identifiers
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates: Position(
-                            startDetails[index]['geometry']['location']['lng'],
-                            startDetails[index]['geometry']['location']['lat']))
-                    .toJson(),
+                    coordinates: Position(
+                        startDetails[index]['geometry']['location']['lng'],
+                        startDetails[index]['geometry']['location']['lat'])),
                 zoom: 15.0));
 
             mapboxMap?.flyTo(
@@ -232,7 +230,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                       coordinates: Position(
                     startDetails[index]['geometry']['location']['lng'],
                     startDetails[index]['geometry']['location']['lat'],
-                  )).toJson(),
+                  )),
                   circleColor: Colors.blue.value,
                   circleRadius: 12.0,
                 ),
@@ -301,10 +299,9 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
             // ignore: no_leading_underscores_for_local_identifiers
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates: Position(
-                            endDetails[index]['geometry']['location']['lng'],
-                            endDetails[index]['geometry']['location']['lat']))
-                    .toJson(),
+                    coordinates: Position(
+                        endDetails[index]['geometry']['location']['lng'],
+                        endDetails[index]['geometry']['location']['lat'])),
                 zoom: 15));
 
             mapboxMap?.flyTo(
@@ -330,7 +327,7 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                       coordinates: Position(
                     endDetails[index]['geometry']['location']['lng'],
                     endDetails[index]['geometry']['location']['lat'],
-                  )).toJson(),
+                  )),
                   circleColor: Colors.red.value,
                   circleRadius: 12.0,
                 ),
@@ -367,12 +364,12 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
                   coordinates: Position(
                 lngStart!,
                 latStart!,
-              )).toJson(),
+              )),
               northeast: Point(
                   coordinates: Position(
                 lngEnd!,
                 latEnd!,
-              )).toJson(),
+              )),
               infiniteBounds: true),
           maxZoom: 15,
           minZoom: 0,
@@ -494,12 +491,8 @@ class OrderRideTabPageState extends State<OrderRideTabPage> {
         SizedBox(
           child: MapWidget(
             key: const ValueKey("mapWidget"),
-            resourceOptions: ResourceOptions(
-                accessToken:
-                    "pk.eyJ1IjoiYmFuZ25ndXllbiIsImEiOiJjbHJsd2ZzdmcxMjJuMnFvajVidHJlY3Z1In0.eHLIejIOfAR9K_u2O5dd6g"),
             cameraOptions: CameraOptions(
-                center:
-                    Point(coordinates: Position(105.83991, 21.02800)).toJson(),
+                center: Point(coordinates: Position(105.83991, 21.02800)),
                 zoom: 15.0),
             styleUri: Mapstyle,
             textureView: true,

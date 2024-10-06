@@ -5,14 +5,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:latlng/latlng.dart';
+import 'package:provider/provider.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:stu_customer/assistants/geofire_assistant.dart';
 import 'package:stu_customer/global/global.dart';
 import 'package:stu_customer/global/API_Key.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:stu_customer/infoHandler/app_info.dart';
+import 'package:stu_customer/main.dart';
+import 'package:stu_customer/models/active_nearby_available_drivers.dart';
+import 'package:stu_customer/screenOld/Map/marker.dart';
 import 'package:stu_customer/tabPages/SearchView/Select_Order_View.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class SearchLocationTitlePage extends StatefulWidget {
   const SearchLocationTitlePage({Key? key}) : super(key: key);
@@ -71,6 +79,15 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   int startLength = 0;
 
   MapboxMap? mapboxMap;
+
+  List<ActiveNearbyAvailableDrivers> onlineNearByAvailableDriversList = [];
+
+  List<LatLng> pLineCoOrdinatesList = [];
+  Set<PolylineAnnotation> polyLineSet = {};
+
+  Set<MarkerMap> markersSet = {};
+  Set<CircleAnnotation> circlesSet = {};
+
   @override
   void initState() {
     super.initState();
@@ -158,6 +175,42 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
+  saveRideRequestInfomation() {
+    if (latEnd == null || lngEnd == null || start == null || end == null) {
+      Fluttertoast.showToast(msg: 'Vui lòng chọn địa điểm.');
+      return;
+    }
+    onlineNearByAvailableDriversList =
+        GeoFireAssistant.activeNearbyAvailableDriversList;
+
+    searchNearestOnlineDrivers();
+  }
+
+  searchNearestOnlineDrivers() async {
+    //no active driver available
+    if (onlineNearByAvailableDriversList.length == 0) {
+      //cancel/delete the RideRequest Information
+
+      setState(() {
+        polyLineSet.clear();
+        markersSet.clear();
+        circlesSet.clear();
+        pLineCoOrdinatesList.clear();
+      });
+
+      Fluttertoast.showToast(
+          msg:
+              "No Online Nearest Driver Available. Search Again after some time, Restarting App Now.");
+
+      Future.delayed(const Duration(milliseconds: 4000), () {
+        MyApp.restartApp(context);
+      });
+
+      return;
+    }
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
   Widget _buildListLocation(bool locationStatus) {
     return ListView.builder(
       itemCount: endPlace.length,
@@ -239,6 +292,14 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                   Globals.SetlngEndOrder = lngEnd;
                   Globals.SetlatEndOrder = latEnd;
 
+                  // if (Provider.of<AppInfo>(context, listen: false)
+                  //         .userDropOffLocation !=
+                  //     null) {
+                  //   Provider.of<AppInfo>(context, listen: false)
+                  //       .userDropOffLocation = null;
+                  //   Provider.of<AppInfo>(context, listen: false)
+                  //       .userPickUpLocation = null;
+                  // }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -260,6 +321,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     GetScreenSize(context);
     return Scaffold(
       resizeToAvoidBottomInset: false, // set it to false

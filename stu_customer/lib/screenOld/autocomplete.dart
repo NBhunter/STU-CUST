@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -99,10 +99,9 @@ class FullMapState extends State<AutocompleteMap> {
             // ignore: no_leading_underscores_for_local_identifiers
             mapboxMap?.setCamera(CameraOptions(
                 center: Point(
-                        coordinates: Position(
-                            details[index]['geometry']['location']['lng'],
-                            details[index]['geometry']['location']['lat']))
-                    .toJson(),
+                    coordinates: Position(
+                        details[index]['geometry']['location']['lng'],
+                        details[index]['geometry']['location']['lat'])),
                 zoom: 12.0));
 
             mapboxMap?.flyTo(
@@ -126,7 +125,7 @@ class FullMapState extends State<AutocompleteMap> {
                       coordinates: Position(
                     details[index]['geometry']['location']['lng'],
                     details[index]['geometry']['location']['lat'],
-                  )).toJson(),
+                  )),
                   circleColor: Colors.blue.value,
                   circleRadius: 12.0,
                 ),
@@ -151,10 +150,8 @@ class FullMapState extends State<AutocompleteMap> {
           SizedBox(
             child: MapWidget(
               key: const ValueKey("mapWidget"),
-              resourceOptions: ResourceOptions(accessToken: "{PUBLIC_TOKENS}"),
               cameraOptions: CameraOptions(
-                  center: Point(coordinates: Position(106, 21)).toJson(),
-                  zoom: 5.0),
+                  center: Point(coordinates: Position(106, 21)), zoom: 5.0),
               styleUri: MapboxStyles.DARK,
               textureView: true,
               onMapCreated: _onMapCreated,
