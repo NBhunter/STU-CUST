@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:stu_customer/firebase_options.dart';
 import 'package:stu_customer/splashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +18,7 @@ void main() async {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        builder: EasyLoading.init(),
         home: const MySplashScreen(),
         debugShowCheckedModeBanner: false,
       ),

@@ -59,21 +59,28 @@ class _HomeTabPageState extends State<HomeTabPage> {
   void _getLocation() async {
     try {
       final locationResult = await location.getLocation();
-      setState(() async {
+
+      // Update the location variables in state synchronously
+      setState(() {
         lngUser = locationResult.longitude!;
         latUser = locationResult.latitude!;
-
-        final url = Uri.parse(
-            'https://rsapi.goong.io/geocode?latlng=$lngUser,$lngUser&api_key=$mapKey');
-
-        var response = await http.get(url);
-        final jsonResponse = jsonDecode(response.body);
-
-        // ignore: unused_local_variable
-        startDetails = jsonResponse['results'] as List<dynamic>;
-
-        startDetails[0]['formatted_address'];
       });
+
+      // Perform the asynchronous HTTP request outside of setState
+      final url = Uri.parse(
+          'https://rsapi.goong.io/geocode?latlng=$latUser,$lngUser&api_key=$mapKey');
+
+      var response = await http.get(url);
+      final jsonResponse = jsonDecode(response.body);
+
+      // Process the JSON response and update state
+      setState(() {
+        startDetails = jsonResponse['results'] as List<dynamic>;
+      });
+
+      // Optionally, you can use the address after decoding it
+      String formattedAddress = startDetails[0]['formatted_address'];
+      print(formattedAddress); // Do something with the formatted address
     } on PlatformException catch (err) {
       setState(() {
         error = err.code;
@@ -84,6 +91,35 @@ class _HomeTabPageState extends State<HomeTabPage> {
       });
     }
   }
+
+  // void _getLocation() async {
+  //   try {
+  //     final locationResult = await location.getLocation();
+  //     setState(() async {
+  //       lngUser = locationResult.longitude!;
+  //       latUser = locationResult.latitude!;
+
+  //       final url = Uri.parse(
+  //           'https://rsapi.goong.io/geocode?latlng=$lngUser,$lngUser&api_key=$mapKey');
+
+  //       var response = await http.get(url);
+  //       final jsonResponse = jsonDecode(response.body);
+
+  //       // ignore: unused_local_variable
+  //       startDetails = jsonResponse['results'] as List<dynamic>;
+
+  //       startDetails[0]['formatted_address'];
+  //     });
+  //   } on PlatformException catch (err) {
+  //     setState(() {
+  //       error = err.code;
+  //       if (err.code == 'PERMISSION_DENIED') {
+  //         error = 'Permission denied';
+  //       }
+  //       print(error);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

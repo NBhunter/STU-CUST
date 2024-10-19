@@ -1,13 +1,17 @@
 // ignore_for_file: unused_field
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:stu_customer/global/API_Key.dart';
 import 'package:stu_customer/global/global.dart';
@@ -38,6 +42,15 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
   bool isHidden = true;
   String Mapstyle = MapboxStyles.LIGHT;
 
+  bool isFindDriver = false;
+
+  LocationData? _location;
+  StreamSubscription<LocationData>? _locationSubscription;
+  final Location location = Location();
+  String? error;
+  String? _error;
+  late double userCurrentLongtitude;
+  late double userCurrentLatitude;
   _onMapCreated(MapboxMap mapboxMap) async {
     this.mapboxMap = mapboxMap;
   }
@@ -60,6 +73,49 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
           zoom: 13.0,
         ),
         MapAnimationOptions(duration: 2000, startDelay: 0));
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
+  /// CancelRoute
+  /// Cancel require to the server
+  CancelRoute() {
+    isFindDriver = false;
+    // Geofire.removeLocation(currentFirebaseUser!.uid);
+
+    // Future.delayed(const Duration(milliseconds: 2000), () {
+    //   //SystemChannels.platform.invokeMethod("SystemNavigator.pop");
+    //   SystemNavigator.pop();
+    // });
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
+  /// CreatedNewRoute
+  /// Send require find a ride to the server
+  CreateNewRoute() {
+    isFindDriver = true;
+
+    // _locationSubscription =
+    //     location.onLocationChanged.handleError((dynamic err) {
+    //   if (err is PlatformException) {
+    //     setState(() {
+    //       print('Lỗi');
+    //       _error = err.code;
+    //     });
+    //   }
+    //   _locationSubscription?.cancel();
+    //   setState(() {
+    //     _locationSubscription = null;
+    //   });
+    // }).listen((currentLocation) {
+    //   _location = currentLocation;
+    // });
+    // Geofire.initialize("RideRequire");
+
+    // Geofire.setLocation(
+    //     currentFirebaseUser!.uid, _location!.latitude!, _location!.longitude!);
+
+    // _locationSubscription?.resume();
+    setState(() {});
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
@@ -243,7 +299,7 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
           children: [
             SizedBox(
               child: MapWidget(
-                key: const ValueKey("mapWidget"),
+                key: ValueKey(mapBoxKey),
                 cameraOptions: CameraOptions(
                     center: Point(
                         coordinates: Position(lngStartOrder!, latStartOrder!)),
@@ -253,129 +309,255 @@ class SelectOrder_ViewState extends State<SelectOrder_ViewPage> {
                 onMapCreated: _onMapCreated,
               ),
             ),
-            // isHidden
-            //     ? const Card()
-            //     :
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  height: 280,
-                  margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  alignment: Alignment.topLeft,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, top: 5),
-                    child: ListView(
-                      children: [
-                        const Text(' STU đưa bạn về ',
-                            style: const TextStyle(
-                                color: Colors.black87, fontSize: 18)),
-                        RichText(
-                            text: TextSpan(children: [
-                          TextSpan(
-                              text: duration,
-                              style: TextStyle(
-                                  color: Colors.green[800], fontSize: 18)),
-                          TextSpan(
-                              text: ' ($distance) ',
-                              style: const TextStyle(
-                                  color: Colors.black87, fontSize: 18)),
-                        ])),
-                        RichText(
-                            text: TextSpan(children: [
-                          TextSpan(
-                              text: '(Giá tiền dự kiến: $sPriceCust)',
-                              style: const TextStyle(
-                                  color: Colors.black87, fontSize: 18)),
-                        ])),
-                        const Padding(
-                            padding: EdgeInsets.only(
-                          top: 8,
-                        )),
-                        const Text(
-                          'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
-                          style: TextStyle(color: Colors.black54, fontSize: 13),
-                        ),
-                        const Text(
-                          'Khách hàng có nhu cầu đưa xe và người xin vui lòng thông báo với tài xế nhận cuốc',
-                          style: TextStyle(color: Colors.black54, fontSize: 13),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Align(
-                          alignment: FractionalOffset.center,
-                          child: Container(
-                            height: 50,
-                            decoration: const BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width: 180,
-                                  height: 55,
+            isFindDriver == false
+                ? Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        height: 280,
+                        margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        alignment: Alignment.topLeft,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 5),
+                          child: ListView(
+                            children: [
+                              const Text(' STU đưa bạn về ',
+                                  style: const TextStyle(
+                                      color: Colors.black87, fontSize: 18)),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: duration,
+                                    style: TextStyle(
+                                        color: Colors.green[800],
+                                        fontSize: 18)),
+                                TextSpan(
+                                    text: ' ($distance) ',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: '(Giá tiền dự kiến: $sPriceCust)',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              const Padding(
+                                  padding: EdgeInsets.only(
+                                top: 8,
+                              )),
+                              const Text(
+                                'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 13),
+                              ),
+                              const Text(
+                                'Khách hàng có nhu cầu đưa xe và người xin vui lòng thông báo với tài xế nhận cuốc',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 13),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Align(
+                                alignment: FractionalOffset.center,
+                                child: Container(
+                                  height: 50,
                                   decoration: const BoxDecoration(
                                     color: Colors.transparent,
                                   ),
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      // MakeOrder();
-                                      Fluttertoast.showToast(
-                                          msg: "MakeOrder click ");
-                                    },
-                                    color: Colors.blue,
-                                    textColor: Colors.white,
-                                    child: const Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(Icons.person),
-                                        Text('Tìm tài xế'),
-                                      ],
-                                    ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: 180,
+                                        height: 55,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            CreateNewRoute();
+                                            Fluttertoast.showToast(
+                                                msg: "MakeOrder click ");
+                                          },
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                          child: const Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.person),
+                                              Text('Tìm tài xế'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      // Container(
+                                      //   width: 15,
+                                      //   height: 55,
+                                      // ),
+                                      // Container(
+                                      //   width: 18,
+                                      //   height: 55,
+                                      //   decoration: BoxDecoration(
+                                      //     color: Colors.transparent,
+                                      //   ),
+                                      //   child: MaterialButton(
+                                      //     onPressed: () {
+                                      //       Navigator.pushNamed(
+                                      //           context, "/EditVehicle");
+                                      //     },
+                                      //     minWidth: 60,
+                                      //     child: Row(
+                                      //       mainAxisSize: MainAxisSize.min,
+                                      //       children: [
+                                      //         Icon(Icons.motorcycle),
+                                      //         Text('Người và xe'),
+                                      //       ],
+                                      //     ),
+                                      //     color: Colors.blue,
+                                      //     textColor: Colors.white,
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
                                 ),
-                                // Container(
-                                //   width: 15,
-                                //   height: 55,
-                                // ),
-                                // Container(
-                                //   width: 18,
-                                //   height: 55,
-                                //   decoration: BoxDecoration(
-                                //     color: Colors.transparent,
-                                //   ),
-                                //   child: MaterialButton(
-                                //     onPressed: () {
-                                //       Navigator.pushNamed(
-                                //           context, "/EditVehicle");
-                                //     },
-                                //     minWidth: 60,
-                                //     child: Row(
-                                //       mainAxisSize: MainAxisSize.min,
-                                //       children: [
-                                //         Icon(Icons.motorcycle),
-                                //         Text('Người và xe'),
-                                //       ],
-                                //     ),
-                                //     color: Colors.blue,
-                                //     textColor: Colors.white,
-                                //   ),
-                                // ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
+                        )),
+                  )
+                : Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        height: 280,
+                        margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        alignment: Alignment.topLeft,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 5),
+                          child: ListView(
+                            children: [
+                              const Text(' STU đưa bạn về ',
+                                  style: const TextStyle(
+                                      color: Colors.black87, fontSize: 18)),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: duration,
+                                    style: TextStyle(
+                                        color: Colors.green[800],
+                                        fontSize: 18)),
+                                TextSpan(
+                                    text: ' ($distance) ',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: '(Giá tiền dự kiến: $sPriceCust)',
+                                    style: const TextStyle(
+                                        color: Colors.black87, fontSize: 18)),
+                              ])),
+                              const Padding(
+                                  padding: EdgeInsets.only(
+                                top: 8,
+                              )),
+                              const Text(
+                                'Ở tình trạng giao thông hiện tại thì đây là tuyến đường nhanh nhất',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 13),
+                              ),
+                              const Text(
+                                'Khách hàng có nhu cầu đưa xe và người xin vui lòng thông báo với tài xế nhận cuốc',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 13),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Align(
+                                alignment: FractionalOffset.center,
+                                child: Container(
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: 180,
+                                        height: 55,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            CreateNewRoute();
+                                            Fluttertoast.showToast(
+                                                msg: "MakeOrder click ");
+                                          },
+                                          color: Colors.blue,
+                                          textColor: Colors.white,
+                                          child: const Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.person),
+                                              Text('Tìm tài xế'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      // Container(
+                                      //   width: 15,
+                                      //   height: 55,
+                                      // ),
+                                      // Container(
+                                      //   width: 18,
+                                      //   height: 55,
+                                      //   decoration: BoxDecoration(
+                                      //     color: Colors.transparent,
+                                      //   ),
+                                      //   child: MaterialButton(
+                                      //     onPressed: () {
+                                      //       Navigator.pushNamed(
+                                      //           context, "/EditVehicle");
+                                      //     },
+                                      //     minWidth: 60,
+                                      //     child: Row(
+                                      //       mainAxisSize: MainAxisSize.min,
+                                      //       children: [
+                                      //         Icon(Icons.motorcycle),
+                                      //         Text('Người và xe'),
+                                      //       ],
+                                      //     ),
+                                      //     color: Colors.blue,
+                                      //     textColor: Colors.white,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
           ],
         )));
   }

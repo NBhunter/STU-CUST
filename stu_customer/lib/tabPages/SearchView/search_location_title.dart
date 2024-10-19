@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +98,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   /// Get **Screen size** (width and height)
   /// and store it in the HeightScreenSize and WidthScreenSize variables.
   void GetScreenSize(BuildContext context) async {
+    //EasyLoading.show(status: 'Downloading...');
     try {
       //try để tránh lỗi
       MediaQueryData queryData;
@@ -113,45 +115,87 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
+  // void _getLocation() async {
+  //   try {
+  //     final locationResult = await location.getLocation();
+  //     setState(() async {
+  //       _location = locationResult;
+  //       _isLoading = true;
+  //       isLocation = true;
+
+  //       final url = Uri.parse(
+  //           'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=$mapKey');
+  //       var response = await http.get(url);
+  //       final jsonResponse = jsonDecode(response.body);
+
+  //       // ignore: unused_local_variable
+  //       Details = jsonResponse['results'] as List<dynamic>;
+
+  //       if (Details.isNotEmpty) {
+  //         // ignore: no_leading_underscores_for_local_identifiers
+  //         // mapboxMap?.setCamera(CameraOptions(
+  //         //     center: Point(
+  //         //             coordinates: Position(
+  //         //                 Details[0]['geometry']['location']['lng'],
+  //         //                 Details[0]['geometry']['location']['lat']))
+  //         //         .toJson(),
+  //         //     zoom: 15.0));
+
+  //         lngUser = double.parse(
+  //             Details[0]['geometry']['location']['lng'].toString());
+  //         latUser = double.parse(
+  //             Details[0]['geometry']['location']['lat'].toString());
+
+  //         lngStart = lngUser;
+  //         latStart = latUser;
+  //         _searchStart.text = Details[0]['formatted_address'].toString();
+  //       } else {
+  //         _getLocation();
+  //       }
+  //       setState(() {});
+  //     });
+  //   } on PlatformException catch (err) {
+  //     Fluttertoast.showToast(msg: "$err");
+  //     setState(() {});
+  //   }
+  // }
   void _getLocation() async {
     try {
       final locationResult = await location.getLocation();
-      setState(() async {
+
+      // Synchronously update the state
+      setState(() {
         _location = locationResult;
         _isLoading = true;
         isLocation = true;
-
-        final url = Uri.parse(
-            'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=$mapKey');
-        var response = await http.get(url);
-        final jsonResponse = jsonDecode(response.body);
-
-        // ignore: unused_local_variable
-        Details = jsonResponse['results'] as List<dynamic>;
-
-        if (Details.isNotEmpty) {
-          // ignore: no_leading_underscores_for_local_identifiers
-          // mapboxMap?.setCamera(CameraOptions(
-          //     center: Point(
-          //             coordinates: Position(
-          //                 Details[0]['geometry']['location']['lng'],
-          //                 Details[0]['geometry']['location']['lat']))
-          //         .toJson(),
-          //     zoom: 15.0));
-
-          lngUser = double.parse(
-              Details[0]['geometry']['location']['lng'].toString());
-          latUser = double.parse(
-              Details[0]['geometry']['location']['lat'].toString());
-
-          lngStart = lngUser;
-          latStart = latUser;
-          _searchStart.text = Details[0]['formatted_address'].toString();
-        } else {
-          _getLocation();
-        }
-        setState(() {});
       });
+
+      // Now perform the async operation outside of setState
+      final url = Uri.parse(
+          'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=$mapKey');
+      var response = await http.get(url);
+      final jsonResponse = jsonDecode(response.body);
+
+      // Process the response after fetching the data
+      Details = jsonResponse['results'] as List<dynamic>;
+
+      if (Details.isNotEmpty) {
+        lngUser =
+            double.parse(Details[0]['geometry']['location']['lng'].toString());
+        latUser =
+            double.parse(Details[0]['geometry']['location']['lat'].toString());
+
+        lngStart = lngUser;
+        latStart = latUser;
+
+        //EasyLoading.dismiss();
+        // Update the state again after processing the response
+        setState(() {
+          _searchStart.text = Details[0]['formatted_address'].toString();
+        });
+      } else {
+        //EasyLoading.dismiss();
+      }
     } on PlatformException catch (err) {
       Fluttertoast.showToast(msg: "$err");
       setState(() {});
@@ -323,6 +367,8 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     GetScreenSize(context);
+
+    // EasyLoading.dismiss();
     return Scaffold(
       resizeToAvoidBottomInset: false, // set it to false
       body: Padding(
