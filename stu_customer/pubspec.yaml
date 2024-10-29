@@ -65,7 +65,7 @@ dependencies:
   firebase_storage: ^12.3.2
   image_picker: ^1.0.4
   flutter_rating_bar: ^4.0.1
-  flutter_geofire: ^2.0.3
+  flutter_geofire: ^2.0.0
   #Regoin FLutter End
   simple_loading_dialog: ^1.0.0
   slidable_button: ^3.0.0+1

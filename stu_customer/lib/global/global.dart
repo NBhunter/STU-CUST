@@ -5,6 +5,11 @@ final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
 List dList = []; //online-active drivers Information List
+String? TripsCode;
+String userDropOffAddress = "";
+String driverCarDetails = "";
+String driverName = "";
+String driverPhone = "";
 
 class Globals {
   static double? _lngStartOrder = 0;

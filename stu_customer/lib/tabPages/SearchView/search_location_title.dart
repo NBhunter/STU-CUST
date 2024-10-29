@@ -19,7 +19,6 @@ import 'package:http/http.dart' as http;
 import 'package:stu_customer/infoHandler/app_info.dart';
 import 'package:stu_customer/main.dart';
 import 'package:stu_customer/models/active_nearby_available_drivers.dart';
-import 'package:stu_customer/screenOld/Map/marker.dart';
 import 'package:stu_customer/tabPages/SearchView/Select_Order_View.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
@@ -86,7 +85,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   List<LatLng> pLineCoOrdinatesList = [];
   Set<PolylineAnnotation> polyLineSet = {};
 
-  Set<MarkerMap> markersSet = {};
   Set<CircleAnnotation> circlesSet = {};
 
   @override
@@ -115,50 +113,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
   }
 
 /*------------------------------------------------------------------------------------------------------------------*/
-  // void _getLocation() async {
-  //   try {
-  //     final locationResult = await location.getLocation();
-  //     setState(() async {
-  //       _location = locationResult;
-  //       _isLoading = true;
-  //       isLocation = true;
 
-  //       final url = Uri.parse(
-  //           'https://rsapi.goong.io/geocode?latlng=${locationResult.latitude},${locationResult.longitude}&api_key=$mapKey');
-  //       var response = await http.get(url);
-  //       final jsonResponse = jsonDecode(response.body);
-
-  //       // ignore: unused_local_variable
-  //       Details = jsonResponse['results'] as List<dynamic>;
-
-  //       if (Details.isNotEmpty) {
-  //         // ignore: no_leading_underscores_for_local_identifiers
-  //         // mapboxMap?.setCamera(CameraOptions(
-  //         //     center: Point(
-  //         //             coordinates: Position(
-  //         //                 Details[0]['geometry']['location']['lng'],
-  //         //                 Details[0]['geometry']['location']['lat']))
-  //         //         .toJson(),
-  //         //     zoom: 15.0));
-
-  //         lngUser = double.parse(
-  //             Details[0]['geometry']['location']['lng'].toString());
-  //         latUser = double.parse(
-  //             Details[0]['geometry']['location']['lat'].toString());
-
-  //         lngStart = lngUser;
-  //         latStart = latUser;
-  //         _searchStart.text = Details[0]['formatted_address'].toString();
-  //       } else {
-  //         _getLocation();
-  //       }
-  //       setState(() {});
-  //     });
-  //   } on PlatformException catch (err) {
-  //     Fluttertoast.showToast(msg: "$err");
-  //     setState(() {});
-  //   }
-  // }
   void _getLocation() async {
     try {
       final locationResult = await location.getLocation();
@@ -202,7 +157,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
     }
   }
 
-/*------------------------------------------------------------------------------------------------------------------*/
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Future<void> getProposePlace(String input) async {
     try {
       final url = Uri.parse(
@@ -218,7 +173,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
     }
   }
 
-/*------------------------------------------------------------------------------------------------------------------*/
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   saveRideRequestInfomation() {
     if (latEnd == null || lngEnd == null || start == null || end == null) {
       Fluttertoast.showToast(msg: 'Vui lòng chọn địa điểm.');
@@ -237,7 +192,6 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
 
       setState(() {
         polyLineSet.clear();
-        markersSet.clear();
         circlesSet.clear();
         pLineCoOrdinatesList.clear();
       });
@@ -254,8 +208,210 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
     }
   }
 
-/*------------------------------------------------------------------------------------------------------------------*/
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Widget _buildListLocation(bool locationStatus) {
+    return ListView.builder(
+      itemCount: endPlace.length,
+      itemBuilder: (context, index) {
+        final coordinate = endPlace[index];
+
+        String PlaceSubtitle;
+
+        PlaceSubtitle =
+            coordinate['structured_formatting']['secondary_text']!.toString();
+
+        return Column(
+          children: [
+            ListTile(
+              subtitle: Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: WidthScreenSize! - 56,
+                    height: 35,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          coordinate['structured_formatting']['main_text'],
+                          // '${coordinate['description']!.toString().substring(0, 50)}...',
+                          softWrap: true, textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontSize: WidthScreenSize! / 25,
+                            fontFamily: 'Inter',
+                            height: 1,
+                          ),
+                        ),
+                        Text(
+                          // coordinate['structured_formatting']['secondary_text'],
+                          PlaceSubtitle,
+                          softWrap: false, textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 90, 90, 90),
+                            fontSize: WidthScreenSize! / 30,
+                            fontFamily: 'Inter',
+                            height: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              onTap: () async {
+                setState(() {});
+
+                final url = Uri.parse(
+                    'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
+                var response = await http.get(url);
+                final jsonResponse = jsonDecode(response.body);
+
+                Details = jsonResponse['results'] as List<dynamic>;
+                if (locationStatus) {
+                  lngStart = Details[index]['geometry']['location']['lng'];
+                  latStart = Details[index]['geometry']['location']['lat'];
+                  _searchStart.text = coordinate['description'];
+                } else {
+                  lngEnd = Details[index]['geometry']['location']['lng'];
+                  latEnd = Details[index]['geometry']['location']['lat'];
+                  _searchEnd.text = coordinate['description'];
+                }
+
+                if (_searchEnd.text.isEmpty) {
+                } else if (_searchStart.text.isEmpty) {
+                } else {
+                  Globals.SetlngStartOrder = lngStart;
+                  Globals.SetlatStartOrder = latStart;
+                  Globals.SetlngEndOrder = lngEnd;
+                  Globals.SetlatEndOrder = latEnd;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          // ignore: prefer_const_constructors
+                          builder: (c) => SelectOrder_ViewPage()));
+                }
+              },
+            ),
+            const Divider(),
+          ],
+        );
+      },
+    );
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
+  Widget _buildListStartLocation(bool locationStatus) {
+    return ListView.builder(
+      itemCount: endPlace.length,
+      itemBuilder: (context, index) {
+        final coordinate = endPlace[index];
+
+        String PlaceSubtitle;
+
+        PlaceSubtitle =
+            coordinate['structured_formatting']['secondary_text']!.toString();
+
+        return Column(
+          children: [
+            ListTile(
+              subtitle: Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: WidthScreenSize! - 56,
+                    height: 35,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          coordinate['structured_formatting']['main_text'],
+                          // '${coordinate['description']!.toString().substring(0, 50)}...',
+                          softWrap: true, textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontSize: WidthScreenSize! / 25,
+                            fontFamily: 'Inter',
+                            height: 1,
+                          ),
+                        ),
+                        Text(
+                          // coordinate['structured_formatting']['secondary_text'],
+                          PlaceSubtitle,
+                          softWrap: false, textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 90, 90, 90),
+                            fontSize: WidthScreenSize! / 30,
+                            fontFamily: 'Inter',
+                            height: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              onTap: () async {
+                setState(() {});
+
+                final url = Uri.parse(
+                    'https://rsapi.goong.io/geocode?address=${coordinate['description']}&api_key=$mapKey');
+                var response = await http.get(url);
+                final jsonResponse = jsonDecode(response.body);
+
+                Details = jsonResponse['results'] as List<dynamic>;
+                if (locationStatus) {
+                  lngStart = Details[index]['geometry']['location']['lng'];
+                  latStart = Details[index]['geometry']['location']['lat'];
+                  _searchStart.text = coordinate['description'];
+                } else {
+                  lngEnd = Details[index]['geometry']['location']['lng'];
+                  latEnd = Details[index]['geometry']['location']['lat'];
+                  _searchEnd.text = coordinate['description'];
+                }
+
+                if (_searchEnd.text.isEmpty) {
+                } else if (_searchStart.text.isEmpty) {
+                } else {
+                  Globals.SetlngStartOrder = lngStart;
+                  Globals.SetlatStartOrder = latStart;
+                  Globals.SetlngEndOrder = lngEnd;
+                  Globals.SetlatEndOrder = latEnd;
+
+                  // if (Provider.of<AppInfo>(context, listen: false)
+                  //         .userDropOffLocation !=
+                  //     null) {
+                  //   Provider.of<AppInfo>(context, listen: false)
+                  //       .userDropOffLocation = null;
+                  //   Provider.of<AppInfo>(context, listen: false)
+                  //       .userPickUpLocation = null;
+                  // }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          // ignore: prefer_const_constructors
+                          builder: (c) => SelectOrder_ViewPage()));
+                }
+              },
+            ),
+            const Divider(),
+          ],
+        );
+      },
+    );
+  }
+
+/*------------------------------------------------------------------------------------------------------------------*/
+  Widget _buildListEndLocation(bool locationStatus) {
     return ListView.builder(
       itemCount: endPlace.length,
       itemBuilder: (context, index) {
@@ -453,37 +609,45 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                                       ),
                                       Expanded(
                                           child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, right: 8),
-                                        child: TextField(
-                                          controller: _searchStart,
-                                          onChanged: (startText) {
-                                            int currentEndLength =
-                                                startText.length;
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, right: 8),
+                                              child: TextField(
+                                                controller: _searchStart,
+                                                onChanged: (startText) {
+                                                  int currentEndLength =
+                                                      startText.length;
 
-                                            if (startText.length >= 3) {
-                                              setState(() {
-                                                start = startText;
-                                              });
-                                              getProposePlace(start);
-                                            }
-                                            isShowStart = false;
-                                            isShowEnd = false;
-                                            if (currentEndLength !=
-                                                startLength) {
-                                              setState(() {});
-                                            }
-                                            startLength = currentEndLength;
-                                          },
-                                          onTap: () {},
-                                          decoration: const InputDecoration(
-                                              hintText: "Nhập điểm đón",
-                                              border: InputBorder.none,
-                                              hintStyle: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 16)),
-                                        ),
-                                      ))
+                                                  if (startText.length >= 3) {
+                                                    setState(() {
+                                                      start = startText;
+                                                    });
+                                                    getProposePlace(start);
+                                                  }
+                                                  isShowStart = true;
+                                                  isShowEnd = false;
+                                                  if (currentEndLength !=
+                                                      startLength) {
+                                                    setState(() {});
+                                                  }
+                                                  startLength =
+                                                      currentEndLength;
+                                                },
+                                                onTap: () {},
+                                                decoration: InputDecoration(
+                                                  hintText: "Nhập điểm đón",
+                                                  border: InputBorder.none,
+                                                  hintStyle: const TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 16),
+                                                  suffixIcon: IconButton(
+                                                    onPressed:
+                                                        _searchStart.clear,
+                                                    icon:
+                                                        const Icon(Icons.clear),
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              )))
                                     ],
                                   )),
                             ],
@@ -539,6 +703,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                                               });
                                               getProposePlace(end);
                                             }
+                                            isShowStart = false;
                                             isShowEnd = true;
                                             if (currentEndLength != endLength) {
                                               setState(() {});
@@ -546,12 +711,18 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                                             endLength = currentEndLength;
                                           },
                                           onTap: () {},
-                                          decoration: const InputDecoration(
-                                              hintText: "Nhập điểm đến",
-                                              border: InputBorder.none,
-                                              hintStyle: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 16)),
+                                          decoration: InputDecoration(
+                                            hintText: "Nhập điểm đến",
+                                            border: InputBorder.none,
+                                            hintStyle: const TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 16),
+                                            suffixIcon: IconButton(
+                                              onPressed: _searchEnd.clear,
+                                              icon: const Icon(Icons.clear),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
                                         ),
                                       ))
                                     ],
@@ -570,7 +741,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                         height: HeightScreenSize! -
                             ((HeightScreenSize! / 10) * 2.8),
                         decoration: const BoxDecoration(color: Colors.white),
-                        child: _buildListLocation(true),
+                        child: _buildListStartLocation(true),
                       ),
                     )
                   : isShowEnd
@@ -582,7 +753,7 @@ class SearchLocationTitleState extends State<SearchLocationTitlePage> {
                                 bottom: ((HeightScreenSize! / 10) * 3.8)),
                             decoration: const BoxDecoration(
                                 color: Color.fromARGB(255, 255, 255, 255)),
-                            child: _buildListLocation(false),
+                            child: _buildListEndLocation(false),
                           ),
                         )
                       : const Card(),
